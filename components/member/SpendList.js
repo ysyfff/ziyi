@@ -39,6 +39,7 @@ const SpendList = (props) => {
       render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm')
     }, {
       key: 'oper',
+      title: '操作',
       render: (v, row) => {
         return (
           <>

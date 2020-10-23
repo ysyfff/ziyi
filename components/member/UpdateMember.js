@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react';
-import { Button, Input, Modal, Table, Form, InputNumber } from 'antd';
+import { Button, Input, Modal, Table, Form } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { member } from '../../db/db'
 
@@ -102,7 +102,7 @@ const UpdateMember = forwardRef((props, ref) => {
           rules={[{ required: true, message: '请输入会员的真实电话' },
             { pattern: /^\d{11}$/g, message: '请输入11位电话号码' }]}
         >
-          <InputNumber placeholder="请输入会员的真实电话" />
+          <Input placeholder="请输入会员的真实电话" />
         </Form.Item>
         {/* <Form.Item
             label="会员积分"
