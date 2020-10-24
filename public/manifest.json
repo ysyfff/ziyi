@@ -1,0 +1,37 @@
+{
+  "name"              : "会员",
+  "short_name"        : "会员",
+  "description"       : "会员",
+  "start_url"         : "/",
+  "display"           : "standalone",
+  "orientation"       : "any",
+  "background_color"  : "#ACE",
+  "theme_color"       : "#ACE",
+  "icons": [
+    {
+      "src"           : "/logo.jpeg",
+      "sizes"         : "72x72",
+      "type"          : "image/png"
+    },
+    {
+      "src"           : "/logo.jpeg",
+      "sizes"         : "152x152",
+      "type"          : "image/png"
+    },
+    {
+      "src"           : "/logo.jpeg",
+      "sizes"         : "192x192",
+      "type"          : "image/png"
+    },
+    {
+      "src"           : "/logo.jpeg",
+      "sizes"         : "256x256",
+      "type"          : "image/png"
+    },
+    {
+      "src"           : "/logo.jpeg",
+      "sizes"         : "512x512",
+      "type"          : "image/png"
+    }
+  ]
+}
