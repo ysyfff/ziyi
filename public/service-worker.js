@@ -11,14 +11,6 @@ const
   installFilesEssential = [
     '/',
     '/manifest.json',
-    //css
-    // '/_next/static/css/styles.chunk.css',
-    '/_next/static/chunks/main.js',
-    // '/_next/static/chunks/webpack.js',
-    // '/_next/static/chunks/styles.js',
-    // '/_next/static/chunks/pages/_app.js',
-    // '/_next/static/chunks/pages/index.js',
-    '/_next/static/chunks/0.js',
   ].concat(offlineURL),
   installFilesDesirable = [
     '/favicon.ico',
@@ -33,7 +25,6 @@ function installStaticFiles() {
 
       // cache desirable files
       cache.addAll(installFilesDesirable);
-      debugger
       // cache essential files
       return cache.addAll(installFilesEssential);
 
