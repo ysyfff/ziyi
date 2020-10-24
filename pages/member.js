@@ -24,6 +24,7 @@ const Member = memo((props) => {
   const [memberVisible, setMemberVisible] = useState(false);
   const memberRef = useRef(null)
   const [loading, setLoading] = useState(false)
+  const [totalMountVisible, setTotalMountVisible] = useState(false)
   const [totalMount, setTotalMount] = useState(0)
 
   const [spendVisible, setSpendVisible] = useState(false);
@@ -207,7 +208,9 @@ const Member = memo((props) => {
             <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
           </Col>
           <Col span={6}>
-            <div style={{textAlign: 'right', fontWeight: 'bold'}}>总收入: {totalMount}元</div>
+            <div style={{textAlign: 'right', fontWeight: 'bold'}} onClick={()=>setTotalMountVisible(!totalMountVisible)}>总收入: 
+              {totalMountVisible &&<span>{totalMount}元</span>}
+            </div>
           </Col>
         </Row>
       </Block>
