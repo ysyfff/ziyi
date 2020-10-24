@@ -1,5 +1,5 @@
 import React, { useEffect, useState, memo, useCallback, useRef } from 'react';
-import { Button, Input, Modal, Table, Form, Row , Col} from 'antd';
+import { Button, Input, Modal, Table, Form, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Block from '../components/Block'
 import { member, spend, idb } from '../db/db'
@@ -84,7 +84,7 @@ const Member = memo((props) => {
       }
     })
 
-    const _totalMount = tmpList.reduce((acc, curr)=>{
+    const _totalMount = tmpList.reduce((acc, curr) => {
       acc = +acc + +curr.money;
       return acc;
     }, 0)
@@ -132,7 +132,7 @@ const Member = memo((props) => {
       key: 'money',
       dataIndex: 'money',
       title: '消费总金额',
-      render: (v)=>`${v}元`
+      render: (v) => `${v}元`
     },
     {
       key: 'spendTotal',
@@ -208,8 +208,8 @@ const Member = memo((props) => {
             <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
           </Col>
           <Col span={6}>
-            <div style={{textAlign: 'right', fontWeight: 'bold'}} onClick={()=>setTotalMountVisible(!totalMountVisible)}>总收入: 
-              {totalMountVisible &&<span>{totalMount}元</span>}
+            <div style={{ textAlign: 'right', fontWeight: 'bold' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
+              {totalMountVisible && <span>: {totalMount}元</span>}
             </div>
           </Col>
         </Row>
