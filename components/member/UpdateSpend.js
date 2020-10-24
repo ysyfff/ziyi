@@ -84,7 +84,7 @@ const UpdateSpend = forwardRef((props, ref) => {
   return (
     <Modal
       visible={spendVisible}
-      title={mode === 'add' ? "添加消费" : '修改消费'}
+      title={mode === 'add' ? "添加购物" : '修改购物'}
       okText="确定"
       cancelText="取消"
       onOk={saveSpend}
@@ -98,19 +98,19 @@ const UpdateSpend = forwardRef((props, ref) => {
         <Form.Item
           label="描述"
           name="desc"
-          rules={[{ required: false, message: '请输入消费内容' }]}
+          rules={[{ required: false, message: '请输入购物内容' }]}
         >
-          <Input placeholder="请输入消费内容" />
+          <Input placeholder="请输入购物内容" />
         </Form.Item>
         <Form.Item
-          label="消费金额"
+          label="购物金额"
           name="money"
-          rules={[{ required: true, message: '请输入消费金额' },
+          rules={[{ required: true, message: '请输入购物金额' },
             // { type: 'number', message: '只能输入数字' },
             { pattern: /^\d+(\.\d+)?$/g, message: '只能输入数字' }
           ]}
         >
-          <Input placeholder="请输入消费金额" />
+          <Input placeholder="请输入购物金额" />
         </Form.Item>
       </Form>
     </Modal>

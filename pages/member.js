@@ -131,13 +131,13 @@ const Member = memo((props) => {
     {
       key: 'money',
       dataIndex: 'money',
-      title: '消费总金额',
+      title: '购物总金额',
       render: (v) => `${v}元`
     },
     {
       key: 'spendTotal',
       dataIndex: 'spendTotal',
-      title: '消费次数',
+      title: '购物次数',
       render: (v) => `${v}次`
     },
     // {
@@ -151,7 +151,7 @@ const Member = memo((props) => {
     {
       key: 'spending',
       dataIndex: 'spending',
-      title: '消费记录',
+      title: '购物记录',
       render: (v, row) => {
         return (
           <>
@@ -186,7 +186,7 @@ const Member = memo((props) => {
             {/* <a onClick={() => delMember(row)}>删除</a> */}
             <a onClick={() => {
               spendRef.current.addSpend({ phone: row.phone });
-            }}>添加消费</a>
+            }}>添加购物</a>
           </div>
         )
       }

@@ -25,7 +25,7 @@ const SpendList = (props) => {
     }, {
       key: 'money',
       dataIndex: 'money',
-      title: '消费金额',
+      title: '购物金额',
       render: (v) => `${v}元`
     }, {
       key: 'addDate',
@@ -54,7 +54,7 @@ const SpendList = (props) => {
     <>
       <Modal
         visible={spendListVisible}
-        title={'查看消费记录'}
+        title={'查看购物记录'}
         okText="确定"
         cancelText="取消"
         width={700}
