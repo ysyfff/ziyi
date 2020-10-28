@@ -5,7 +5,9 @@ import sw from '../utils/sw.js';
 
 function MyApp({ Component, pageProps }) {
   useEffect(()=>{
-    sw();
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../service-worker.js');
+    }
   }, [])
   return <Component {...pageProps} />
 }
