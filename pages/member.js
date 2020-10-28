@@ -140,18 +140,28 @@ const Member = memo((props) => {
       title: '购物次数',
       render: (v) => `${v}次`
     },
-    // {
-    //   key: 'score',
-    //   dataIndex: 'score',
-    //   title: '积分',
-    //   render: (v) => {
-    //     return v || 0
-    //   }
-    // },
     {
       key: 'spending',
       dataIndex: 'spending',
       title: '购物记录',
+      render: (v, row) => {
+        return (
+          <>
+            <Button type="link" onClick={() => seeHistory(row.phone)}>查看</Button>
+          </>
+        )
+      }
+    },
+    {
+      key: 'spendTotal',
+      dataIndex: 'spendTotal',
+      title: '兑换金额',
+      render: (v) => `${v}次`
+    },
+    {
+      key: 'spending',
+      dataIndex: 'spending',
+      title: '兑换记录',
       render: (v, row) => {
         return (
           <>
@@ -187,6 +197,9 @@ const Member = memo((props) => {
             <a onClick={() => {
               spendRef.current.addSpend({ phone: row.phone });
             }}>添加购物</a>
+            <a onClick={() => {
+              // scoreRef.current.useScore({ phone: row.phone });
+            }}>积分兑换</a>
           </div>
         )
       }
