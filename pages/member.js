@@ -8,6 +8,7 @@ import UpdateMember from '../components/member/UpdateMember';
 import UpdateSpend from '../components/member/UpdateSpend';
 import UpdateScore from '../components/member/UpdateScore';
 import SpendList from '../components/member/SpendList';
+import ScoreList from '../components/member/ScoreList';
 import dayjs from 'dayjs';
 const { Search } = Input;
 
@@ -37,6 +38,7 @@ const Member = memo((props) => {
   const [spendListData, setSpendListData] = useState([])
   const [scoreListData, setScoreListData] = useState([])
   const [spendListVisible, setSpendListVisible] = useState(false)
+  const [scoreListVisible, setScoreListVisible] = useState(false)
 
   const [phone, setPhone] = useState('');
 
@@ -138,7 +140,7 @@ const Member = memo((props) => {
   const seeScore = useCallback((phone) => {
     setPhone(phone);
     setScoreListVisible(true);
-    setScoreListData(spendListObject[phone])
+    setScoreListData(scoreListObject[phone])
   });
 
 
@@ -287,6 +289,13 @@ const Member = memo((props) => {
           setScoreListData(scoreListObject[phone])
         }}
       />
+      <ScoreList
+        scoreListData={scoreListData}
+        setScoreListData={setScoreListData}
+        scoreListVisible={scoreListVisible}
+        setScoreListVisible={setScoreListVisible}
+        scoreRef={scoreRef}
+      ></ScoreList>
       <SpendList
         spendListData={spendListData}
         setSpendListData={setSpendListData}

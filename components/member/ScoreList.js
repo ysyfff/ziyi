@@ -5,16 +5,16 @@ import { member } from '../../db/db'
 import dayjs from 'dayjs'
 
 
-const SpendList = (props) => {
-  const { spendListVisible, setSpendListVisible, spendRef, spendListData, setSpendListData } = props;
+const ScoreList = (props) => {
+  const { scoreListVisible, setScoreListVisible, scoreRef, scoreListData, setScoreListData } = props;
 
-  const closeSpendList = useCallback(() => {
-    setSpendListData([]);
-    setSpendListVisible(false)
+  const closeScoreList = useCallback(() => {
+    setScoreListData([]);
+    setScoreListVisible(false)
   }, []);
 
-  const editSpend = useCallback(({ row } = {}) => {
-    spendRef.current.editSpend({ row })
+  const editScore = useCallback(({ row } = {}) => {
+    scoreRef.current.editScore({ row })
   }, []);
 
   const columns = [
@@ -25,7 +25,7 @@ const SpendList = (props) => {
     }, {
       key: 'money',
       dataIndex: 'money',
-      title: '购物金额',
+      title: '兑换金额',
       render: (v) => `${v}元`
     }, {
       key: 'addDate',
@@ -43,7 +43,7 @@ const SpendList = (props) => {
       render: (v, row) => {
         return (
           <>
-            <a onClick={() => editSpend({ row })}>修改</a>
+            <a onClick={() => editScore({ row })}>修改</a>
           </>
         )
       }
@@ -53,17 +53,17 @@ const SpendList = (props) => {
   return (
     <>
       <Modal
-        visible={spendListVisible}
-        title={'查看购物记录'}
+        visible={scoreListVisible}
+        title={'查看兑换记录'}
         okText="确定"
         cancelText="取消"
         width={700}
-        onOk={closeSpendList}
-        onCancel={closeSpendList}
+        onOk={closeScoreList}
+        onCancel={closeScoreList}
       >
         <Table
           rowKey="id"
-          dataSource={spendListData}
+          dataSource={scoreListData}
           columns={columns}
           pagination={{
             showTotal: total => `总共${total}条`,
@@ -75,4 +75,4 @@ const SpendList = (props) => {
   )
 }
 
-export default SpendList;
+export default ScoreList;
