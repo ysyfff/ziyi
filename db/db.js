@@ -192,7 +192,7 @@ export default class IDB {
   }
 }
 
-const idb = new IDB({ version: 23, name: 'ziyi' })
+const idb = new IDB({ version: 24, name: 'ziyi' })
 
 idb.addStore({
   storeName: 'member',
@@ -225,11 +225,26 @@ idb.addStore({
   }
 });
 
+idb.addStore({
+  storeName: 'score',
+  updated: false,
+  createStore: ({ db }) => {
+    const store = db.createObjectStore('score', {
+      keyPath: 'id',
+      autoIncrement: true
+    })
+
+    store.createIndex('phone', 'phone');
+    store.createIndex('desc', 'desc');
+  }
+});
+
 
 
 const member = idb.getStoreInstance({ storeName: 'member' })
 const spend = idb.getStoreInstance({ storeName: 'spend' })
+const score = idb.getStoreInstance({ storeName: 'score' })
 
 export {
-  member, spend, idb
+  member, spend, idb, score
 }

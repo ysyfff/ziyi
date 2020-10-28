@@ -2,16 +2,18 @@ import React, { useEffect, useState, memo, useCallback, useRef } from 'react';
 import { Button, Input, Modal, Table, Form, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Block from '../components/Block'
-import { member, spend, idb } from '../db/db'
+import { member, spend, idb, score } from '../db/db'
 import '../styles/member.less'
 import UpdateMember from '../components/member/UpdateMember';
 import UpdateSpend from '../components/member/UpdateSpend';
+import UpdateScore from '../components/member/UpdateScore';
 import SpendList from '../components/member/SpendList';
 import dayjs from 'dayjs';
 const { Search } = Input;
 
 
 const spendListObject = {};
+const scoreListObject = {};
 
 const sortedById = (a, b) => {
   return b.id - a.id;
@@ -28,12 +30,15 @@ const Member = memo((props) => {
   const [totalMount, setTotalMount] = useState(0)
 
   const [spendVisible, setSpendVisible] = useState(false);
+  const [scoreVisible, setScoreVisible] = useState(false);
   const spendRef = useRef(null)
+  const scoreRef = useRef(null)
 
   const [spendListData, setSpendListData] = useState([])
+  const [scoreListData, setScoreListData] = useState([])
   const [spendListVisible, setSpendListVisible] = useState(false)
 
-  const [spendPhone, setSpendPhone] = useState('');
+  const [phone, setPhone] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0)
@@ -58,11 +63,12 @@ const Member = memo((props) => {
       }) || [];
     }
 
-    await getSpendList({ list })
+    await combineSpendAndScore({ list })
   }, [searchValue]);
 
-  const getSpendList = useCallback(async ({ list } = {}) => {
+  const combineSpendAndScore = useCallback(async ({ list } = {}) => {
 
+    // 根据手机号查询所有的购物记录
     await Promise.all(list.map(async item => {
       const v = await spend.getItems(item.phone, {
         index: 'phone', sorted: sortedById
@@ -71,12 +77,26 @@ const Member = memo((props) => {
       spendListObject[item.phone] = v;
       return v;
     }))
-    console.log('spendListObject:', spendListObject)
+
+    // 根据手机号查询所有兑换积分记录
+    await Promise.all(list.map(async item => {
+      const v = await score.getItems(item.phone, {
+        index: 'phone', sorted: sortedById
+      })
+      // 以phone的维度缓存spendList
+      scoreListObject[item.phone] = v;
+      return v;
+    }))
 
     const tmpList = list.map(item => {
       return {
         ...item,
         spendTotal: spendListObject[item.phone].length,
+        scoreTotal: scoreListObject[item.phone].length,
+        scoreMoney: scoreListObject[item.phone].reduce((acc, curr) => {
+          acc = +acc + +curr.money;
+          return acc;
+        }, 0),
         money: spendListObject[item.phone].reduce((acc, curr) => {
           acc = +acc + +curr.money;
           return acc;
@@ -111,9 +131,14 @@ const Member = memo((props) => {
 
 
   const seeHistory = useCallback((phone) => {
-    setSpendPhone(phone);
+    setPhone(phone);
     setSpendListVisible(true);
     setSpendListData(spendListObject[phone])
+  });
+  const seeScore = useCallback((phone) => {
+    setPhone(phone);
+    setScoreListVisible(true);
+    setScoreListData(spendListObject[phone])
   });
 
 
@@ -153,9 +178,15 @@ const Member = memo((props) => {
       }
     },
     {
-      key: 'spendTotal',
-      dataIndex: 'spendTotal',
-      title: '兑换金额',
+      key: 'scoreMoney',
+      dataIndex: 'scoreMoney',
+      title: '兑换总金额',
+      render: (v) => `${v}元`
+    },
+    {
+      key: 'scoreTotal',
+      dataIndex: 'scoreTotal',
+      title: '兑换次数',
       render: (v) => `${v}次`
     },
     {
@@ -165,7 +196,7 @@ const Member = memo((props) => {
       render: (v, row) => {
         return (
           <>
-            <Button type="link" onClick={() => seeHistory(row.phone)}>查看</Button>
+            <Button type="link" onClick={() => seeScore(row.phone)}>查看</Button>
           </>
         )
       }
@@ -198,7 +229,7 @@ const Member = memo((props) => {
               spendRef.current.addSpend({ phone: row.phone });
             }}>添加购物</a>
             <a onClick={() => {
-              // scoreRef.current.useScore({ phone: row.phone });
+              scoreRef.current.addScore({ phone: row.phone });
             }}>积分兑换</a>
           </div>
         )
@@ -244,7 +275,16 @@ const Member = memo((props) => {
         setSpendVisible={setSpendVisible}
         handleSearch={async () => {
           await handleSearch();
-          setSpendListData(spendListObject[spendPhone])
+          setSpendListData(spendListObject[phone])
+        }}
+      />
+      <UpdateScore
+        ref={scoreRef}
+        scoreVisible={scoreVisible}
+        setScoreVisible={setScoreVisible}
+        handleSearch={async () => {
+          await handleSearch();
+          setScoreListData(scoreListObject[phone])
         }}
       />
       <SpendList
