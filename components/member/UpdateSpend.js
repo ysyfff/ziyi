@@ -70,14 +70,14 @@ const UpdateSpend = forwardRef((props, ref) => {
           })
         }
 
-        handleSearch()
+        handleSearch({noResetPage: true})
       }
     })
   }, [editId, addKey]);
 
   const delSpend = useCallback(async (row) => {
     await spend.delItems(row.id);
-    handleSearch();
+    handleSearch({ noResetPage: true });
   }, []);
 
 

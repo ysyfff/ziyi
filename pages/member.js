@@ -179,18 +179,18 @@ const Member = memo((props) => {
         )
       }
     },
-    {
-      key: 'scoreMoney',
-      dataIndex: 'scoreMoney',
-      title: '兑换总金额',
-      render: (v) => `${v}元`
-    },
-    {
-      key: 'scoreTotal',
-      dataIndex: 'scoreTotal',
-      title: '兑换次数',
-      render: (v) => `${v}次`
-    },
+    // {
+    //   key: 'scoreMoney',
+    //   dataIndex: 'scoreMoney',
+    //   title: '兑换总金额',
+    //   render: (v) => `${v}元`
+    // },
+    // {
+    //   key: 'scoreTotal',
+    //   dataIndex: 'scoreTotal',
+    //   title: '兑换次数',
+    //   render: (v) => `${v}次`
+    // },
     {
       key: 'spending',
       dataIndex: 'spending',
