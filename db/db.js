@@ -70,19 +70,18 @@ export default class IDB {
     db = db || this.db;
 
     if (db && this.existStore({ db, storeName })) {
-
-      if (Object.prototype.toString.call(values) === '[object Object]') {
-        // 单个增加
-        db.add(storeName, values)
-      } else {
-        // 多个增加
-        const tx = db.transaction(storeName, 'readwrite');
-        const arr = values.map(item => {
-          return tx.store.add(item);
-        })
-        arr.push(tx.done)
-        await Promise.all(arr)
-      }
+        if (Object.prototype.toString.call(values) === '[object Object]') {
+          // 单个增加
+          db.add(storeName, values)
+        } else {
+          // 多个增加
+          const tx = db.transaction(storeName, 'readwrite');
+          const arr = values.map(item => {
+            return tx.store.add(item);
+          })
+          arr.push(tx.done)
+          await Promise.all(arr)
+        }
     }
   }
 

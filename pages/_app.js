@@ -6,7 +6,7 @@ import sw from '../utils/sw.js';
 function MyApp({ Component, pageProps }) {
   useEffect(()=>{
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('../service-worker.js');
+      // navigator.serviceWorker.register('../service-worker.js');
     }
   }, [])
   return <Component {...pageProps} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react';
-import { Button, Input, Modal, Table, Form } from 'antd';
+import { Button, Input, Modal, Table, Form, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { member } from '../../db/db'
 
@@ -51,20 +51,26 @@ const UpdateMember = forwardRef((props, ref) => {
       if (values) {
         closeMember()
         if (mode === 'add') {
+          if(member.getItems(values.phone)){
+            message.info(`已经存在电话为${values.phone}的用户`)
+          }else{
+            await member.setItems({
+              ...values,
+              addDate: new Date(),
+              editDate: new Date()
+            })
+            handleSearch()
 
-          await member.setItems({
-            ...values,
-            addDate: new Date(),
-            editDate: new Date()
-          })
+          }
+          
         } else {
           await member.editItems(editId, {
             ...values,
             editDate: new Date()
           })
+          handleSearch()
         }
 
-        handleSearch()
       }
     })
   }, [editId]);
