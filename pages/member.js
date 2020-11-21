@@ -10,6 +10,7 @@ import UpdateScore from '../components/member/UpdateScore';
 import SpendList from '../components/member/SpendList';
 import ScoreList from '../components/member/ScoreList';
 import dayjs from 'dayjs';
+import downloadFile from 'react-file-download'
 const { Search } = Input;
 
 
@@ -143,6 +144,14 @@ const Member = memo((props) => {
     setScoreListData(scoreListObject[phone])
   });
 
+  const backup = async ()=>{
+    downloadFile(JSON.stringify({
+      spend:await spend.getItems(), 
+      member:await member.getItems(), 
+      score:await score.getItems()
+    }), 'ziyi.text')
+  }
+
 
   const columns = [
     {
@@ -179,18 +188,6 @@ const Member = memo((props) => {
         )
       }
     },
-    // {
-    //   key: 'scoreMoney',
-    //   dataIndex: 'scoreMoney',
-    //   title: '兑换总金额',
-    //   render: (v) => `${v}元`
-    // },
-    // {
-    //   key: 'scoreTotal',
-    //   dataIndex: 'scoreTotal',
-    //   title: '兑换次数',
-    //   render: (v) => `${v}次`
-    // },
     {
       key: 'spending',
       dataIndex: 'spending',
@@ -251,10 +248,18 @@ const Member = memo((props) => {
       <Block>
         <Row align="middle">
           <Col span={18}>
+            <div style={{display: 'flex'}}>
+            <div>
             <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
+            </div>
+            <div style={{marginLeft: 20}}>
+              <Button type="ghost" onClick={() => backup()}>备份</Button>
+            </div>
+            </div>
           </Col>
+             
           <Col span={6}>
-            <div style={{ textAlign: 'right', fontWeight: 'bold' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
+            <div style={{ textAlign: 'right', fontWeight: 'bold', display: 'inline-block' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
               {totalMountVisible && <span>: {totalMount}元</span>}
             </div>
           </Col>
