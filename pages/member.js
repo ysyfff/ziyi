@@ -35,6 +35,7 @@ const Member = memo((props) => {
   const [scoreVisible, setScoreVisible] = useState(false);
   const spendRef = useRef(null)
   const scoreRef = useRef(null)
+  const uploadRef = useRef(null)
 
   const [spendListData, setSpendListData] = useState([])
   const [scoreListData, setScoreListData] = useState([])
@@ -144,12 +145,27 @@ const Member = memo((props) => {
     setScoreListData(scoreListObject[phone])
   });
 
-  const backup = async ()=>{
+  const backup = async () => {
     downloadFile(JSON.stringify({
-      spend:await spend.getItems(), 
-      member:await member.getItems(), 
-      score:await score.getItems()
+      spend: await spend.getItems(),
+      member: await member.getItems(),
+      score: await score.getItems()
     }), 'ziyi.text')
+  }
+
+  const hanldeFileUpload = (e) => {
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const bobj = JSON.parse(bstr);
+      // const {member, spend, score} = bobj;
+      spend.setItems(bobj.spend)
+      member.setItems(bobj.member)
+      score.setItems(bobj.score)
+    }
+    reader.readAsText(file)
+    console.log(file)
   }
 
 
@@ -248,18 +264,28 @@ const Member = memo((props) => {
       <Block>
         <Row align="middle">
           <Col span={18}>
-            <div style={{display: 'flex'}}>
-            <div>
-            <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
-            </div>
-            <div style={{marginLeft: 20}}>
-              <Button type="ghost" onClick={() => backup()}>备份</Button>
-            </div>
+            <div style={{ display: 'flex' }}>
+              <div>
+                <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
+              </div>
+              <div style={{ marginLeft: 60 }}>
+                <Button onClick={() => backup()}>备份</Button>
+              </div>
+              <div style={{ marginLeft: 20 }}>
+                <Button onClick={e => uploadRef.current.click()}>导入数据</Button>
+                <input
+                  style={{ visibility: 'hidden' }}
+                  type="file"
+                  accept="text"
+                  ref={uploadRef}
+                  onChange={hanldeFileUpload}
+                />
+              </div>
             </div>
           </Col>
-             
+
           <Col span={6}>
-            <div style={{ textAlign: 'right', fontWeight: 'bold', display: 'inline-block' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
+            <div style={{ textAlign: 'right', fontWeight: 'bold' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
               {totalMountVisible && <span>: {totalMount}元</span>}
             </div>
           </Col>
