@@ -51,7 +51,8 @@ const UpdateMember = forwardRef((props, ref) => {
       if (values) {
         closeMember()
         if (mode === 'add') {
-          if(member.getItems(values.phone)){
+          const v = await member.getItems(values.phone, {index: ['phone']})
+          if(v && v.length){
             message.info(`已经存在电话为${values.phone}的用户`)
           }else{
             await member.setItems({
