@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import AwesomeSlider from 'react-awesome-slider'
 import withAutoplay from 'react-awesome-slider/dist/autoplay'
 import CoreStyles from 'react-awesome-slider/src/core/styles.scss';
@@ -8,10 +8,10 @@ import '../styles/clock.less'
 const AutoplaySlider = withAutoplay(AwesomeSlider)
 
 const imgs = [
-  "https://up.enterdesk.com/edpic_360_360/27/8f/93/278f938be4b460a57962d542eee989f6.jpg",
-  "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg",
-  // "/smile.jpeg",
-  // "/clothes.jpeg",
+  // "https://up.enterdesk.com/edpic_360_360/27/8f/93/278f938be4b460a57962d542eee989f6.jpg",
+  // "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg",
+  "/smile.jpeg",
+  "/clothes.jpeg",
 ];
 
 const fix0 = (str) => {
@@ -39,6 +39,18 @@ const Clock = (props) => {
   const [second, setSecond] = useState(seconds())
   const [theme, setTheme] = useState('gold') // gold 2
   
+  const changeTheme = ()=>{
+    const el = document.querySelectorAll('.awssld__content');
+    console.log(el, 'gg')
+    el.forEach((element)=>{
+      console.log(el, 'ggi')
+      element.classList.add(`awssld__content-${theme}`)
+    })
+  };
+
+  useEffect(()=>{
+    changeTheme()
+  }, [theme])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -46,6 +58,8 @@ const Clock = (props) => {
       setMinute(minutes())
       setSecond(seconds())
     }, 500)
+
+    changeTheme();
 
     // let i = 0;
     // const clr = setInterval(()=>{
@@ -63,13 +77,16 @@ const Clock = (props) => {
   return (
     <div className={`wrapper wrapper-${theme}`}>
       <div className={`videos`}>
-        <div className="space"></div>
+        {/* <div className="space"></div> */}
         <AutoplaySlider
           play={true}
           cancelOnInteraction={false}
           interval={30000}
           media={imgs.map(item => ({ source: item }))}
           animation="foldOutAnimation"
+          onTransitionStart={()=>{
+            changeTheme()
+          }}
           cssModule={[
             CoreStyles, AnimationStyles
           ]}

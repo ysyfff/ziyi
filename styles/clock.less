@@ -8,6 +8,7 @@
   2: #fbfbfc;
 }
 
+@video-width: 80vw;
 
 
 .space {
@@ -16,7 +17,7 @@
 }
 
 .videos {
-  width: 78vw;
+  width: @video-width;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -28,7 +29,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 22vw;
+  width: 100vw-@video-width;
   height: 100vh;
   font-size: 15vw;
   display: flex;
@@ -54,6 +55,10 @@
 }
 
 each(@bg-set, {
+    .awssld__content-@{key} {
+      background-color: @value;
+    }
+
     .wrapper-@{key} {
       background-color: @value;
     }
@@ -72,3 +77,13 @@ each(@color-set, {
   }
 
 );
+
+.awssld,
+.awssld__container {
+  height: 100vh;
+}
+
+.awssld__content>img,
+.awssld__content>video {
+  object-fit: contain;
+}

@@ -10,6 +10,7 @@ import UpdateScore from '../components/member/UpdateScore';
 import SpendList from '../components/member/SpendList';
 import ScoreList from '../components/member/ScoreList';
 import dayjs from 'dayjs';
+import downloadFile from 'react-file-download'
 const { Search } = Input;
 
 
@@ -34,6 +35,7 @@ const Member = memo((props) => {
   const [scoreVisible, setScoreVisible] = useState(false);
   const spendRef = useRef(null)
   const scoreRef = useRef(null)
+  const uploadRef = useRef(null)
 
   const [spendListData, setSpendListData] = useState([])
   const [scoreListData, setScoreListData] = useState([])
@@ -143,6 +145,29 @@ const Member = memo((props) => {
     setScoreListData(scoreListObject[phone])
   });
 
+  const backup = async () => {
+    downloadFile(JSON.stringify({
+      spend: await spend.getItems(),
+      member: await member.getItems(),
+      score: await score.getItems()
+    }), 'ziyi.text')
+  }
+
+  const hanldeFileUpload = (e) => {
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const bobj = JSON.parse(bstr);
+      // const {member, spend, score} = bobj;
+      spend.setItems(bobj.spend)
+      member.setItems(bobj.member)
+      score.setItems(bobj.score)
+    }
+    reader.readAsText(file)
+    console.log(file)
+  }
+
 
   const columns = [
     {
@@ -179,18 +204,6 @@ const Member = memo((props) => {
         )
       }
     },
-    // {
-    //   key: 'scoreMoney',
-    //   dataIndex: 'scoreMoney',
-    //   title: '兑换总金额',
-    //   render: (v) => `${v}元`
-    // },
-    // {
-    //   key: 'scoreTotal',
-    //   dataIndex: 'scoreTotal',
-    //   title: '兑换次数',
-    //   render: (v) => `${v}次`
-    // },
     {
       key: 'spending',
       dataIndex: 'spending',
@@ -251,8 +264,26 @@ const Member = memo((props) => {
       <Block>
         <Row align="middle">
           <Col span={18}>
-            <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
+            <div style={{ display: 'flex' }}>
+              <div>
+                <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
+              </div>
+              <div style={{ marginLeft: 60 }}>
+                <Button onClick={() => backup()}>备份</Button>
+              </div>
+              <div style={{ marginLeft: 20 }}>
+                <Button onClick={e => uploadRef.current.click()}>导入数据</Button>
+                <input
+                  style={{ visibility: 'hidden' }}
+                  type="file"
+                  accept="text"
+                  ref={uploadRef}
+                  onChange={hanldeFileUpload}
+                />
+              </div>
+            </div>
           </Col>
+
           <Col span={6}>
             <div style={{ textAlign: 'right', fontWeight: 'bold' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
               {totalMountVisible && <span>: {totalMount}元</span>}
