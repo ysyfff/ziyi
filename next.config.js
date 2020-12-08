@@ -9,19 +9,28 @@ if (typeof require !== "undefined") {
     require.extensions[".less"] = (file) => { };
 }
 
+// const nextConfig = withCSS({
+//     cssModules: true,
+//     cssLoaderOptions: {
+//         importLoaders: 1,
+//         localIdentName: "[local]___[hash:base64:5]",
+//     },
+//     ...withLess(
+//         {
+//             lessLoaderOptions: {
+//                 javascriptEnabled: true,
+//             },
+//         }
+//     ),
+// });
+
 const nextConfig = withCSS({
-    cssModules: true,
-    cssLoaderOptions: {
-        importLoaders: 1,
-        localIdentName: "[local]___[hash:base64:5]",
-    },
-    ...withLess(
-        withSass({
-            lessLoaderOptions: {
+  cssModules: true,
+  ...withSass(withLess({
+    lessLoaderOptions: {
                 javascriptEnabled: true,
             },
-        })
-    ),
+  }))
 });
 
 module.exports = {...nextConfig}

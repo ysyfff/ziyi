@@ -1,0 +1,74 @@
+@bg-set: {
+  gold: #31313b;
+  2: #0195ef;
+}
+
+@color-set: {
+  gold: #e4cb73;
+  2: #fbfbfc;
+}
+
+
+
+.space {
+  width: 2vw;
+  height: 100vh;
+}
+
+.videos {
+  width: 78vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.clock {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22vw;
+  height: 100vh;
+  font-size: 15vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.dot-wrap {
+  display: flex;
+}
+
+.dot {
+  width: 2vw;
+  height: 2vw;
+  border-radius: 4vw;
+  margin-right: 6vw;
+}
+
+.dot:last-child {
+  margin-right: 0;
+}
+
+each(@bg-set, {
+    .wrapper-@{key} {
+      background-color: @value;
+    }
+  }
+
+);
+
+each(@color-set, {
+    .clock-@{key} {
+      color: @value;
+    }
+
+    .dot-@{key} {
+      background-color: @value;
+    }
+  }
+
+);
