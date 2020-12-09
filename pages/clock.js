@@ -14,6 +14,11 @@ const imgs = [
   "/clothes.jpeg",
 ];
 
+const videos = [
+  "/bed.mp4",
+  "/smile2.mp4"
+]
+
 const fix0 = (str) => {
   if (+str < 10) {
     return `0${str}`
@@ -81,8 +86,15 @@ const Clock = (props) => {
         <AutoplaySlider
           play={true}
           cancelOnInteraction={false}
-          interval={30000}
-          media={imgs.map(item => ({ source: item }))}
+          interval={15*1000}
+          media={imgs.map(item => ({ source: item })).concat(videos.map(item => ({
+            children: (<video
+              src={item}
+              type="video/mp4"
+              controls
+              autoPlay
+              loop
+            />)})))}
           animation="foldOutAnimation"
           onTransitionStart={()=>{
             changeTheme()
