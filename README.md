@@ -46,5 +46,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - [会员][1]
 - [钟表][2]
 
-[1]:ziyi.vercel.app
-[2]:ziyi.vercel.app/clock
+[1]:https://ziyi.vercel.app
+[2]:https://ziyi.vercel.app/clock
