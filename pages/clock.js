@@ -73,9 +73,8 @@ const Clock = (props) => {
   const [oneWord, setOneWord] = useState({});
 
   const getOneWord = async () => {
-    // const rst = await axios.get('http://open.iciba.com/dsapi/');
     const rst = await axios({
-      url: 'http://open.iciba.com/dsapi/',
+      url: 'https://open.iciba.com/dsapi/',
       adapter: jsonp,
     });
     const { sid, tts, content, note, picture } = rst.data;
