@@ -14,7 +14,7 @@
     "@zeit/next-sass": "^1.0.1",
     "antd": "^4.6.6",
     "babel-plugin-import": "^1.13.0",
-    "dayjs": "^1.9.3",
+    "dayjs": "^1.9.7",
     "idb": "^5.0.6",
     "less": "^3.12.2",
     "next": "9.5.3",

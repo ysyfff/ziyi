@@ -9,10 +9,14 @@
 }
 
 @video-width: 70vw;
-@clock-font: 22vw;
+@clock-font: 20vw;
 
-body{
+body {
   overflow: hidden;
+}
+
+.wrapper {
+  display: flex;
 }
 
 .space {
@@ -30,9 +34,6 @@ body{
 
 
 .clock {
-  position: absolute;
-  top: 0;
-  right: 0;
   width: 100vw-@video-width;
   height: 100vh;
   font-size: @clock-font;
@@ -43,7 +44,7 @@ body{
   line-height: 1.0;
 }
 
-.second{
+.second {
   font-size: @clock-font / 2;
 }
 
@@ -62,6 +63,28 @@ body{
   margin-right: 0;
 }
 
+.date,
+.week {
+  position: absolute;
+  left: 0;
+  height: 10vh;
+  display: flex;
+  font-size: 8vh;
+  justify-content: center;
+  align-items: center;
+  width: @video-width;
+  background: rgba(0, 0, 0, .2);
+}
+
+.date {
+  top: 0;
+}
+
+.week {
+  bottom: 0;
+  height: 10vh
+}
+
 each(@bg-set, {
     .awssld__content-@{key} {
       background-color: @value;
@@ -76,6 +99,14 @@ each(@bg-set, {
 
 each(@color-set, {
     .clock-@{key} {
+      color: @value;
+    }
+
+    .date-@{key} {
+      color: @value;
+    }
+
+    .week-@{key} {
       color: @value;
     }
 

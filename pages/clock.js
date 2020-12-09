@@ -3,19 +3,16 @@ import AwesomeSlider from 'react-awesome-slider'
 import withAutoplay from 'react-awesome-slider/dist/autoplay'
 import CoreStyles from 'react-awesome-slider/src/core/styles.scss';
 import AnimationStyles from 'react-awesome-slider/src/styled/fold-out-animation/fold-out-animation.scss';
+import dayjs from 'dayjs'
 import '../styles/clock.less'
 
 const AutoplaySlider = withAutoplay(AwesomeSlider)
 
-const imgs = [
-  // "https://up.enterdesk.com/edpic_360_360/27/8f/93/278f938be4b460a57962d542eee989f6.jpg",
-  // "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg",
-  "/smile.jpeg",
-  "/clothes.jpeg",
-];
 
-const videos = [
+const medias = [
+  "/smile.jpeg",
   "/bed.mp4",
+  "/clothes.jpeg",
   "/smile2.mp4"
 ]
 
@@ -38,12 +35,38 @@ const seconds = () => {
   return fix0(new Date().getSeconds())
 }
 
+const createMedia = ()=>{
+  return medias.map(item=>{
+    if(item.match(/\.(mp4|webm)/)){
+      return {
+        children: (
+          <video
+            src={item}
+            type="video/mp4"
+            controls
+            autoPlay
+            loop
+          />
+        )
+      }
+    }else{
+      return {
+        source: item
+      }
+    }
+  })
+}
+
+const weeks = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+
 const Clock = (props) => {
   const [hour, setHour] = useState(hours())
   const [minute, setMinute] = useState(minutes())
   const [second, setSecond] = useState(seconds())
   const [theme, setTheme] = useState('gold') // gold 2
-  
+  const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
+  const [week, setWeek] = useState(weeks[dayjs().format('d')])
+
   const changeTheme = ()=>{
     const el = document.querySelectorAll('.awssld__content');
     console.log(el, 'gg')
@@ -64,6 +87,11 @@ const Clock = (props) => {
       setSecond(seconds())
     }, 500)
 
+    const timer2 = setInterval(()=>{
+      setDate(dayjs().format('YYYY-MM-DD'))
+      setWeek(weeks[dayjs().format('d')])
+    }, 5 * 60 * 1000)
+
     changeTheme();
 
     // let i = 0;
@@ -74,6 +102,7 @@ const Clock = (props) => {
 
     return () => {
       clearInterval(timer)
+      clearInterval(timer2)
       // clearInterval(clr)
     }
   }, [])
@@ -81,20 +110,13 @@ const Clock = (props) => {
   const dotCls = `dot dot-${theme}`
   return (
     <div className={`wrapper wrapper-${theme}`}>
+      {/* media */}
       <div className={`videos`}>
-        {/* <div className="space"></div> */}
         <AutoplaySlider
           play={true}
           cancelOnInteraction={false}
           interval={15*1000}
-          media={imgs.map(item => ({ source: item })).concat(videos.map(item => ({
-            children: (<video
-              src={item}
-              type="video/mp4"
-              controls
-              autoPlay
-              loop
-            />)})))}
+          media={createMedia()}
           animation="foldOutAnimation"
           onTransitionStart={()=>{
             changeTheme()
@@ -105,6 +127,7 @@ const Clock = (props) => {
         >
         </AutoplaySlider>
       </div>
+      {/* clock */}
       <div className={`clock clock-${theme}`}>
         <div className="hour">{hour}</div>
         <div className="dot-wrap">
@@ -117,6 +140,15 @@ const Clock = (props) => {
           <div className={dotCls}></div>
         </div>
         <div className="second">{second}</div>
+      </div>
+
+      {/* date */}
+      {/* <div className={`date date-${theme}`}>
+        {date}
+      </div> */}
+      {/* week */}
+      <div className={`week week-${theme}`}>
+        {date} {week}
       </div>
     </div>
   )
