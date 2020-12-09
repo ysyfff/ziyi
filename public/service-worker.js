@@ -7,7 +7,6 @@ Service Worker是一个标准的 web worker，浏览器用一个单独的线程�
 const
   version = '1.0.2',
   CACHE = version + '::ZiyiMember',
-  exceptPages = ['/clock', 'localhost'], // 排除的页面不缓存 & 本地页面不缓存
   installFilesEssential = [
     '/',
     '/manifest.json',
@@ -49,45 +48,31 @@ self.addEventListener('activate', event => {
   );
 });
 
-self.addEventListener('fetch', async (event) => {
+self.addEventListener('fetch', event => {
 
   if (event.request.method !== 'GET') return;
   let url = event.request.url;
 
-  const clientId = event.clientId;
-  let clientUrl;
-  if (clientId) {
-    if ('get' in clients) {
-      const client = await clients.get(clientId);
-      clientUrl = client.url;
-    } else {
-      const allClients = await clients.matchAll({ type: 'window' });
-      const filtered = allClients.filter(client => client.id === clientId);
-      if (filtered.length > 0) {
-        clientUrl = filtered[0].url;
-      }
-    }
-  }
+  
 
   event.respondWith(
+    // 打开缓存
     caches.open(CACHE)
       .then(cache => {
+        // 匹配缓存
         return cache.match(event.request)
           .then(response => {
+            // 匹配到缓存，使用缓存
             if (response) {
               return response;
             }
+            // 未匹配到缓存，发起请求
             return fetch(event.request)
               .then(newreq => {
                 console.log('network fetch: ' + url);
-                console.log('client url: ', clientUrl)
-                if(exceptPages.some(item=>clientUrl.indexOf(item)>-1)){
-                  // 不缓存
-                }else{
-                  if (newreq.ok) cache.put(event.request, newreq.clone());
-                }
+                // 请求成功后，缓存资源
+                if (newreq.ok) cache.put(event.request, newreq.clone());
                 return newreq;
-
               })
               .catch(()=>null);
           });

@@ -6,7 +6,10 @@ import sw from '../utils/sw.js';
 function MyApp({ Component, pageProps }) {
   useEffect(()=>{
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('../service-worker.js');
+      if (window.location.host.indexOf('localhost') > -1){ // 本地不注册sw
+      }else{
+        navigator.serviceWorker.register('../service-worker.js');
+      }
     }
   }, [])
   return <Component {...pageProps} />
