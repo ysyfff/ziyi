@@ -9,6 +9,7 @@
 }
 
 @video-width: 70vw;
+@clock-font: 22vw;
 
 
 .space {
@@ -31,12 +32,16 @@
   right: 0;
   width: 100vw-@video-width;
   height: 100vh;
-  font-size: 20vw;
+  font-size: @clock-font;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   line-height: 1.0;
+}
+
+.second{
+  font-size: @clock-font / 2;
 }
 
 .dot-wrap {

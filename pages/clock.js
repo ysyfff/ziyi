@@ -104,7 +104,7 @@ const Clock = (props) => {
           <div className={dotCls}></div>
           <div className={dotCls}></div>
         </div>
-        <div>{second}</div>
+        <div className="second">{second}</div>
       </div>
     </div>
   )
