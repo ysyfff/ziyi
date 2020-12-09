@@ -73,11 +73,21 @@ body {
   justify-content: center;
   align-items: center;
   width: @video-width;
-  background: rgba(0, 0, 0, .2);
+  background: rgba(0, 0, 0, .5);
 }
 
 .date {
+  // width: 100vw;
   top: 0;
+  justify-content: flex-start;
+}
+.date >img{
+  object-fit: contain;
+  height: 10vh;
+}
+.one-word{
+  font-size: 5vh;
+  line-height: 1;
 }
 
 .week {
