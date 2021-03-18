@@ -41,6 +41,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - __transaction__  事务，一个或多个操作的wrapper，保证数据库的完整性
 - __cursor__       遍历多条就的机制
 
+## Vercel
+
+- https://vercel.com/dashboard
+
 ## 网站内容包含
 
 - [会员][1]
@@ -48,3 +52,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 [1]:https://ziyi.vercel.app
 [2]:https://ziyi.vercel.app/clock
+
+## 最坑的坑
+
+- 添加的時候偶尔会覆盖掉之前的数据，百思不得其解，认为是indexedDB的bug
+  - 最终发现是useCallback的问题，在修改完一条数据后，`setMode('edit')`下次新增的时候虽然执行了`setMode('add')`，但是由于useCallback中并无`[mode]`设置，导致一直认为mode是edit
+  - 但是呢，因祸得福，弄了nas，docker,centos,mongodb等学到了不少
