@@ -25,17 +25,17 @@ const UpdateMember = forwardRef((props, ref) => {
 
   const [form] = Form.useForm();
 
-  const closeMember = useCallback(() => {
+  const closeMember = () => {
     setMemberVisible(false);
     form.resetFields();
-  }, []);
+  };
 
-  const addMember = useCallback(async () => {
+  const addMember = async () => {
     setMemberVisible(true)
     setMode('add')
-  }, []);
+  };
 
-  const editMember = useCallback(async (row) => {
+  const editMember = async (row) => {
     setMode('edit');
     setEditId(row.id)
     setMemberVisible(true)
@@ -44,9 +44,9 @@ const UpdateMember = forwardRef((props, ref) => {
       name: row.name,
       phone: row.phone
     })
-  }, [])
+  }
 
-  const saveMember = useCallback(async () => {
+  const saveMember = async () => {
     form.validateFields().then(async values => {
       if (values) {
         closeMember()
@@ -74,12 +74,12 @@ const UpdateMember = forwardRef((props, ref) => {
 
       }
     })
-  }, [editId]);
+  };
 
-  const delMember = useCallback(async (row) => {
+  const delMember = async (row) => {
     await member.delItems(row.id);
     handleSearch();
-  }, []);
+  }
 
 
   return (

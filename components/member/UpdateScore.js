@@ -26,18 +26,18 @@ const UpdateScore = forwardRef((props, ref) => {
 
   const [form] = Form.useForm();
 
-  const closeScore = useCallback(() => {
+  const closeScore = () => {
     setScoreVisible(false);
     form.resetFields();
-  }, []);
+  };
 
-  const addScore = useCallback(async ({ phone } = {}) => {
+  const addScore = async ({ phone } = {}) => {
     setScoreVisible(true)
     setMode('add')
     setAddKey(phone)
-  }, [addKey]);
+  }
 
-  const editScore = useCallback(async ({ row } = {}) => {
+  const editScore = async ({ row } = {}) => {
     setMode('edit');
     setEditId(row.id)
     setScoreVisible(true)
@@ -47,9 +47,9 @@ const UpdateScore = forwardRef((props, ref) => {
       desc: row.desc,
       money: row.money
     })
-  }, [])
+  }
 
-  const saveScore = useCallback(async () => {
+  const saveScore = async () => {
     form.validateFields().then(async values => {
       if (values) {
         closeScore()
@@ -72,12 +72,12 @@ const UpdateScore = forwardRef((props, ref) => {
         handleSearch()
       }
     })
-  }, [editId, addKey]);
+  }
 
-  const delScore = useCallback(async (row) => {
+  const delScore = async (row) => {
     await score.delItems(row.id);
     handleSearch();
-  }, []);
+  }
 
 
   return (

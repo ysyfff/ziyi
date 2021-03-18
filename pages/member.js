@@ -48,7 +48,7 @@ const Member = memo((props) => {
   const [total, setTotal] = useState(0)
   const [searchValue, setSearchValue] = useState('')
 
-  const handleSearch = useCallback(async (value) => {
+  const handleSearch = async (value) => {
     setLoading(true)
     if (value === undefined) {
       value = searchValue;
@@ -68,9 +68,9 @@ const Member = memo((props) => {
     }
 
     await combineSpendAndScore({ list })
-  }, [searchValue]);
+  }
 
-  const combineSpendAndScore = useCallback(async ({ list } = {}) => {
+  const combineSpendAndScore = async ({ list } = {}) => {
 
     // 根据手机号查询所有的购物记录
     await Promise.all(list.map(async item => {
@@ -119,7 +119,7 @@ const Member = memo((props) => {
     setList(tmpList)
 
 
-  }, [])
+  }
 
 
   useEffect(() => {
@@ -134,16 +134,16 @@ const Member = memo((props) => {
   }
 
 
-  const seeHistory = useCallback((phone) => {
+  const seeHistory = (phone) => {
     setPhone(phone);
     setSpendListVisible(true);
     setSpendListData(spendListObject[phone])
-  });
-  const seeScore = useCallback((phone) => {
+  };
+  const seeScore = (phone) => {
     setPhone(phone);
     setScoreListVisible(true);
     setScoreListData(scoreListObject[phone])
-  });
+  };
 
   const backup = async () => {
     downloadFile(JSON.stringify({
