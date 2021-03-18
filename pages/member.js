@@ -12,6 +12,7 @@ import ScoreList from '../components/member/ScoreList';
 import dayjs from 'dayjs';
 import downloadFile from 'react-file-download'
 const { Search } = Input;
+import axios from 'axios'
 
 
 const spendListObject = {};
@@ -48,7 +49,7 @@ const Member = memo((props) => {
   const [total, setTotal] = useState(0)
   const [searchValue, setSearchValue] = useState('')
 
-  const handleSearch = useCallback(async (value) => {
+  const handleSearch = async (value) => {
     setLoading(true)
     if (value === undefined) {
       value = searchValue;
@@ -57,20 +58,18 @@ const Member = memo((props) => {
     }
     let list = []
     if (value) {
-      list = await member.getItems(value, {
-        index: ['name', 'phone'], fuzzy: true,
-        sorted: sortedById
-      })
+      const rst = await axios.post('/api/ziyi/member/fuzzyquery', {value});
+      list = rst.data;
     } else {
-      list = await member.getItems(null, {
-        sorted: sortedById
-      }) || [];
+      // 查询全部
+      const rst = await axios.post('/api/ziyi/member/query', {});
+      list = rst.data;
     }
 
     await combineSpendAndScore({ list })
-  }, [searchValue]);
+  };
 
-  const combineSpendAndScore = useCallback(async ({ list } = {}) => {
+  const combineSpendAndScore = async ({ list } = {}) => {
 
     // 根据手机号查询所有的购物记录
     await Promise.all(list.map(async item => {
@@ -119,7 +118,7 @@ const Member = memo((props) => {
     setList(tmpList)
 
 
-  }, [])
+  }
 
 
   useEffect(() => {
@@ -134,16 +133,16 @@ const Member = memo((props) => {
   }
 
 
-  const seeHistory = useCallback((phone) => {
+  const seeHistory = (phone) => {
     setPhone(phone);
     setSpendListVisible(true);
     setSpendListData(spendListObject[phone])
-  });
-  const seeScore = useCallback((phone) => {
+  }
+  const seeScore = (phone) => {
     setPhone(phone);
     setScoreListVisible(true);
     setScoreListData(scoreListObject[phone])
-  });
+  }
 
   const backup = async () => {
     downloadFile(JSON.stringify({
@@ -199,159 +198,161 @@ const Member = memo((props) => {
       render: (v, row) => {
         return (
           <>
-            <Button type="link" onClick={() => seeHistory(row.phone)}>查看</Button>
+            <a type="link" onClick={() => seeHistory(row.phone)}>{row.spendTotal}次</a>
           </>
         )
       }
     },
-    {
-      key: 'spending',
-      dataIndex: 'spending',
+{
+  key: 'spending',
+    dataIndex: 'spending',
       title: '兑换记录',
-      render: (v, row) => {
-        return (
-          <>
-            <Button type="link" onClick={() => seeScore(row.phone)}>查看</Button>
-          </>
-        )
-      }
-    },
-    {
-      key: 'addDate',
-      dataIndex: 'addDate',
+        render: (v, row) => {
+          return (
+            <>
+              <Button type="link" onClick={() => seeScore(row.phone)}>查看</Button>
+            </>
+          )
+        }
+},
+{
+  key: 'addDate',
+    dataIndex: 'addDate',
       title: '添加日期',
-      render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm')
-    }, {
-      key: 'editDate',
-      dataIndex: 'editDate',
+        render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm')
+}, {
+  key: 'editDate',
+    dataIndex: 'editDate',
       title: '修改日期',
-      render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm')
-    },
-    {
-      key: 'oper',
-      dataIndex: 'oper',
+        render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm')
+},
+{
+  key: 'oper',
+    dataIndex: 'oper',
       title: '操作',
-      render: (v, row) => {
+        render: (v, row) => {
 
-        return (
-          <div className="oper">
-            <a onClick={() => {
-              memberRef.current.editMember(row)
-            }
-            }>修改</a>
-            {/* <a onClick={() => delMember(row)}>删除</a> */}
-            <a onClick={() => {
-              spendRef.current.addSpend({ phone: row.phone });
-            }}>添加购物</a>
-            <a onClick={() => {
-              scoreRef.current.addScore({ phone: row.phone });
-            }}>积分兑换</a>
-          </div>
-        )
-      }
-    }
+          return (
+            <div className="oper">
+              <a onClick={() => {
+                memberRef.current.editMember(row)
+              }
+              }>修改</a>
+              {/* <a onClick={() => delMember(row)}>删除</a> */}
+              <a onClick={() => {
+                spendRef.current.addSpend({ phone: row.phone });
+              }}>添加购物</a>
+              <a onClick={() => {
+                scoreRef.current.addScore({ phone: row.phone });
+              }}>积分兑换</a>
+            </div>
+          )
+        }
+}
   ]
 
-  return (
-    <div>
-      <Search
-        placeholder="查找会员"
-        size="large"
-        allowClear={true}
-        onSearch={handleSearch}
-        style={{ width: '100%' }}
-      ></Search>
-      <Block>
-        <Row align="middle">
-          <Col span={18}>
-            <div style={{ display: 'flex' }}>
-              <div>
-                <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
-              </div>
-              <div style={{ marginLeft: 60 }}>
-                <Button onClick={() => backup()}>备份</Button>
-              </div>
-              <div style={{ marginLeft: 20 }}>
-                <Button onClick={e => uploadRef.current.click()}>导入数据</Button>
-                <input
-                  style={{ visibility: 'hidden' }}
-                  type="file"
-                  accept="text"
-                  ref={uploadRef}
-                  onChange={hanldeFileUpload}
-                />
-              </div>
+return (
+  <div>
+    <Search
+      placeholder="查找会员"
+      size="large"
+      allowClear={true}
+      onSearch={handleSearch}
+      style={{ width: '100%' }}
+    ></Search>
+    <Block>
+      <Row align="middle">
+        <Col span={18}>
+          <div style={{ display: 'flex' }}>
+            <div>
+              <Button type="primary" onClick={() => memberRef.current.addMember()}>添加会员</Button>
             </div>
-          </Col>
+            <div style={{ marginLeft: 60 }}>
+              <Button onClick={() => backup()}>备份</Button>
+            </div>
+            <div style={{ marginLeft: 20 }}>
+              <Button onClick={e => uploadRef.current.click()}>导入数据</Button>
+              <input
+                style={{ visibility: 'hidden' }}
+                type="file"
+                accept="text"
+                ref={uploadRef}
+                onChange={hanldeFileUpload}
+              />
+            </div>
+          </div>
+        </Col>
 
-          <Col span={6}>
-            <div style={{ textAlign: 'right', fontWeight: 'bold' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
+        <Col span={6}>
+          <div style={{ textAlign: 'right', fontWeight: 'bold' }} onClick={() => setTotalMountVisible(!totalMountVisible)}>总收入
               {totalMountVisible && <span>: {totalMount}元</span>}
-            </div>
-          </Col>
-        </Row>
-      </Block>
-      <Modal
-        visible={spendVisible}
-      >
+          </div>
+        </Col>
+      </Row>
+    </Block>
+    <Modal
+      visible={spendVisible}
+    >
 
-      </Modal>
-      <UpdateMember
-        ref={memberRef}
-        memberVisible={memberVisible}
-        setMemberVisible={setMemberVisible}
-        handleSearch={handleSearch}
-      />
-      <UpdateSpend
-        ref={spendRef}
-        spendVisible={spendVisible}
-        setSpendVisible={setSpendVisible}
-        handleSearch={async () => {
-          await handleSearch();
-          setSpendListData(spendListObject[phone])
+    </Modal>
+    <UpdateMember
+      ref={memberRef}
+      memberVisible={memberVisible}
+      setMemberVisible={setMemberVisible}
+      handleSearch={handleSearch}
+      loadingOn={()=>setLoading(true)}
+      loadingOff={()=>setLoading(false)}
+    />
+    <UpdateSpend
+      ref={spendRef}
+      spendVisible={spendVisible}
+      setSpendVisible={setSpendVisible}
+      handleSearch={async () => {
+        await handleSearch();
+        setSpendListData(spendListObject[phone])
+      }}
+    />
+    <UpdateScore
+      ref={scoreRef}
+      scoreVisible={scoreVisible}
+      setScoreVisible={setScoreVisible}
+      handleSearch={async () => {
+        await handleSearch();
+        setScoreListData(scoreListObject[phone])
+      }}
+    />
+    <ScoreList
+      scoreListData={scoreListData}
+      setScoreListData={setScoreListData}
+      scoreListVisible={scoreListVisible}
+      setScoreListVisible={setScoreListVisible}
+      scoreRef={scoreRef}
+    ></ScoreList>
+    <SpendList
+      spendListData={spendListData}
+      setSpendListData={setSpendListData}
+      spendListVisible={spendListVisible}
+      setSpendListVisible={setSpendListVisible}
+      spendRef={spendRef}
+    ></SpendList>
+    <Block>
+      <Table
+        loading={loading}
+        rowKey="id"
+        dataSource={list}
+        columns={columns}
+        pagination={{
+          total,
+          showTotal: total => `总共${total}条`,
+          current: currentPage,
+          onChange: page => {
+            setCurrentPage(page)
+          }
         }}
       />
-      <UpdateScore
-        ref={scoreRef}
-        scoreVisible={scoreVisible}
-        setScoreVisible={setScoreVisible}
-        handleSearch={async () => {
-          await handleSearch();
-          setScoreListData(scoreListObject[phone])
-        }}
-      />
-      <ScoreList
-        scoreListData={scoreListData}
-        setScoreListData={setScoreListData}
-        scoreListVisible={scoreListVisible}
-        setScoreListVisible={setScoreListVisible}
-        scoreRef={scoreRef}
-      ></ScoreList>
-      <SpendList
-        spendListData={spendListData}
-        setSpendListData={setSpendListData}
-        spendListVisible={spendListVisible}
-        setSpendListVisible={setSpendListVisible}
-        spendRef={spendRef}
-      ></SpendList>
-      <Block>
-        <Table
-          loading={loading}
-          rowKey="id"
-          dataSource={list}
-          columns={columns}
-          pagination={{
-            total,
-            showTotal: total => `总共${total}条`,
-            current: currentPage,
-            onChange: page => {
-              setCurrentPage(page)
-            }
-          }}
-        />
-      </Block>
-    </div>
-  )
+    </Block>
+  </div>
+)
 });
 
 export default Member;

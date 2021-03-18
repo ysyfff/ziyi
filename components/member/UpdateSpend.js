@@ -26,19 +26,19 @@ const UpdateSpend = forwardRef((props, ref) => {
 
   const [form] = Form.useForm();
 
-  const closeSpend = useCallback(() => {
+  const closeSpend = () => {
     setSpendVisible(false);
     form.resetFields();
-  }, []);
+  };
 
-  const addSpend = useCallback(async ({phone}={}) => {
+  const addSpend =async ({phone}={}) => {
     console.log(phone, 'gg')
     setSpendVisible(true)
     setMode('add')
     setAddKey(phone)
-  },[addKey]);
+  };
 
-  const editSpend = useCallback(async ({row}={}) => {
+  const editSpend = async ({row}={}) => {
     setMode('edit');
     setEditId(row.id)
     setSpendVisible(true)
@@ -48,9 +48,9 @@ const UpdateSpend = forwardRef((props, ref) => {
       desc: row.desc,
       money: row.money
     })
-  }, [])
+  }
 
-  const saveSpend = useCallback(async () => {
+  const saveSpend = async () => {
     form.validateFields().then(async values => {
       if (values) {
         closeSpend()
@@ -73,12 +73,12 @@ const UpdateSpend = forwardRef((props, ref) => {
         handleSearch({noResetPage: true})
       }
     })
-  }, [editId, addKey]);
+  }
 
-  const delSpend = useCallback(async (row) => {
+  const delSpend = async (row) => {
     await spend.delItems(row.id);
     handleSearch({ noResetPage: true });
-  }, []);
+  }
 
 
   return (

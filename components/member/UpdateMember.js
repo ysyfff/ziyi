@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, forwardRef, useImperativeHandl
 import { Button, Input, Modal, Table, Form, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { member } from '../../db/db'
+import axios from 'axios'
 
 const layout = {
   labelCol: { span: 8 },
@@ -19,67 +20,81 @@ const UpdateMember = forwardRef((props, ref) => {
     })
   )
 
-  const { memberVisible, setMemberVisible, handleSearch} = props;
+  const { memberVisible, setMemberVisible, handleSearch, loadingOn, loadingOff} = props;
   const [mode, setMode] = useState('add')
   const [editId, setEditId] = useState('');
 
   const [form] = Form.useForm();
 
-  const closeMember = useCallback(() => {
+  const closeMember = () => {
     setMemberVisible(false);
     form.resetFields();
-  }, []);
+  }
 
-  const addMember = useCallback(async () => {
+  const addMember = async () => {
+    debugger
     setMemberVisible(true)
     setMode('add')
-  }, []);
+  };
 
-  const editMember = useCallback(async (row) => {
+  const editMember = async (row) => {
     setMode('edit');
-    setEditId(row.id)
+    setEditId(row._id)
     setMemberVisible(true)
 
     form.setFieldsValue({
       name: row.name,
       phone: row.phone
     })
-  }, [])
+  }
 
-  const saveMember = useCallback(async () => {
+  const saveMember = async () => {
     form.validateFields().then(async values => {
       if (values) {
         closeMember()
         if (mode === 'add') {
-          const v = await member.getItems(values.phone, {index: ['phone']})
+          debugger
+          loadingOn()
+          const rst = await axios.post('/api/ziyi/member/query', {
+            phone: values.phone
+          });
+          loadingOff()
+          const {data:v} = rst;
+          
           if(v && v.length){
             message.info(`已经存在电话为${values.phone}的用户`)
           }else{
-            await member.setItems({
+            loadingOn()
+            await axios.post('/api/ziyi/member/create', {
               ...values,
               addDate: new Date(),
               editDate: new Date()
             })
+            loadingOff()
             handleSearch()
-
           }
           
         } else {
-          await member.editItems(editId, {
+          debugger
+          loadingOn()
+          await axios.post('/api/ziyi/member/update', {
             ...values,
+            _id: editId,
+            addDate: new Date(),
             editDate: new Date()
           })
+          loadingOff()
           handleSearch()
         }
 
       }
     })
-  }, [editId]);
+  };
 
-  const delMember = useCallback(async (row) => {
+  const delMember = async (row) => {
     await member.delItems(row.id);
     handleSearch();
-  }, []);
+  };
 
 
   return (

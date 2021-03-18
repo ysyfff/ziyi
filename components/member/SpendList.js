@@ -8,14 +8,14 @@ import dayjs from 'dayjs'
 const SpendList = (props) => {
   const { spendListVisible, setSpendListVisible, spendRef, spendListData, setSpendListData } = props;
 
-  const closeSpendList = useCallback(() => {
+  const closeSpendList = () => {
     setSpendListData([]);
     setSpendListVisible(false)
-  }, []);
+  };
 
-  const editSpend = useCallback(({row}={}) => {
+  const editSpend = ({row}={}) => {
     spendRef.current.editSpend({row})
-  }, []);
+  };
 
   const columns = [
     {

@@ -8,14 +8,14 @@ import dayjs from 'dayjs'
 const ScoreList = (props) => {
   const { scoreListVisible, setScoreListVisible, scoreRef, scoreListData, setScoreListData } = props;
 
-  const closeScoreList = useCallback(() => {
+  const closeScoreList = () => {
     setScoreListData([]);
     setScoreListVisible(false)
-  }, []);
+  };
 
-  const editScore = useCallback(({ row } = {}) => {
+  const editScore = ({ row } = {}) => {
     scoreRef.current.editScore({ row })
-  }, []);
+  };
 
   const columns = [
     {
