@@ -1,8 +1,13 @@
 import React from 'react';
+import {NextSeo} from 'next-seo'
 import '../styles/resume.less'
 
 const Resume = props => {
   return (
+    <>
+    <NextSeo
+      title="尹士勇简历" 
+    />
     <div className="wrap">
       <h1 >尹士勇(男)</h1>
       <h1>求职意向：前端工程师</h1>
@@ -123,6 +128,7 @@ const Resume = props => {
       </ul>
 
       <h1>个人作品</h1>
+      <div className="divider"></div>
       <ul>
         <li>
           <div className="flex-between">
@@ -142,6 +148,7 @@ const Resume = props => {
         <li>好奇心强，打破砂锅问到底</li>
       </ul>
     </div>
+    </>
   )
 }
 

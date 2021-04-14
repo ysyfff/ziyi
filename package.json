@@ -21,6 +21,7 @@
     "less": "^3.12.2",
     "next": "9.5.3",
     "next-offline": "^5.0.2",
+    "next-seo": "^4.23.0",
     "node-sass": "^5.0.0",
     "react": "16.13.1",
     "react-awesome-slider": "^4.1.0",
