@@ -116,7 +116,7 @@ const Resume = props => {
         <li>掌握HTML、CSS、JavaScript、React、Vue、React Native</li>
         <li>熟悉redux、mobx、dva</li>
         <li>熟悉iview、antd</li>
-        <li>熟悉http、ajax、WebSocket、Servie Worker、PWA</li>
+        <li>熟悉http、ajax、WebSocket、SW(Service Worker)、PWA</li>
         <li>熟悉node、python、django</li>
         <li>熟悉indexdb, mongodb</li>
         <li>英语CET4</li>
@@ -128,7 +128,7 @@ const Resume = props => {
           <div className="flex-between">
             <span>会员管理系统(离线化)</span>
             <a href="https://ziyi.vercel.app/" target="_blank">ziyi.vercel.app</a>
-            <span>React+next+Service Worker+PWA</span>
+            <span>React+next+SW+PWA</span>
           </div> 
         </li>
         <li><div className="flex-between"><span>女儿视频合集</span><a href="http://tsnow.top:1888/video" target="_blank">tsnow.top:1888/video</a><span>React+next+mongodb</span></div></li>
