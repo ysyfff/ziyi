@@ -131,7 +131,7 @@ const Resume = props => {
             <span>React+next+SW+PWA</span>
           </div> 
         </li>
-        <li><div className="flex-between"><span>女儿视频合集</span><a href="http://tsnow.top:1888/video" target="_blank">tsnow.top:1888/video</a><span>React+next+mongodb</span></div></li>
+        <li><div className="flex-between"><span>家庭视频合集</span><a href="http://tsnow.top:1888/video" target="_blank">tsnow.top:1888/video</a><span>React+next+mongodb</span></div></li>
       </ul>
 
       <h1>自我评价</h1>
