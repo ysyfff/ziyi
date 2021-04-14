@@ -23,7 +23,7 @@ const Resume = props => {
         <div>计算机科学与技术/<strong>本科</strong></div>
       </div>
 
-      <h1>工作经历&middot;7年</h1>
+      <h1>工作经历&nbsp;&middot;&nbsp;7年</h1>
       <div className="divider"></div>
       <div className="flex-between ml5">
         <div>
@@ -106,7 +106,7 @@ const Resume = props => {
       </ul>
       <div className="item-title flex-between"><span>参与酒店移动页面开发</span><span>React</span><span>H5</span></div>
       <ul>
-        <li>酒店业务华为对接，协调团结10多个小组进30人，推动项目的发展，按时成功上线</li>
+        <li>酒店业务华为对接，协调团结10多个小组近30人，推动项目的发展，按时成功上线</li>
       </ul>
       <div className="item-title flex-between"><span>参与再出发公众号的开发</span><span>avalon+Oniui</span><span>公众号</span></div>
 
