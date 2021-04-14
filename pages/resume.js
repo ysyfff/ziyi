@@ -23,7 +23,7 @@ const Resume = props => {
         <div>计算机科学与技术/<strong>本科</strong></div>
       </div>
 
-      <h1>工作经历&nbsp;&middot;&nbsp;7年</h1>
+      <h1>工作经历&middot;7年</h1>
       <div className="divider"></div>
       <div className="flex-between ml5">
         <div>
