@@ -117,23 +117,31 @@ ul {
   word-wrap: break-word;
 }
 
-ul {
+.wrap ul {
   list-style: none;
   margin-left: 0;
   padding-left: 0;
 }
 
-li {
+.wrap li {
   padding-left: 1em;
-  text-indent: -1em;
   margin-top: 2px;
+  position: relative;
   font-size: 13px;
 }
 
-li:before {
+.wrap li span,
+.wrap li a {
+  font-size: 13px;
+}
+
+.wrap li:before {
   content: "-";
+  position: absolute;
+  left: 0;
+  top: 0;
   font-weight: 700;
-  padding-right: 5px;
+  // padding-right: 5px;
 }
 
 .wrap {
