@@ -140,6 +140,13 @@ const Resume = props => {
       <h1>个人作品</h1>
       <div className="divider"></div>
       <ul>
+      <li>
+          <div className="flex-between">
+            <span>本人简历网页版</span>
+            <a href="https://ziyi.vercel.app/resume" target="_blank">ziyi.vercel.app/resume</a>
+            <span>React+next</span>
+          </div> 
+        </li>
         <li>
           <div className="flex-between">
             <span>会员管理系统(离线化)</span>
@@ -147,6 +154,7 @@ const Resume = props => {
             <span>React+next+SW+PWA</span>
           </div> 
         </li>
+        
         <li><div className="flex-between"><span>家庭视频合集</span><a href="http://tsnow.top:1888/video" target="_blank">tsnow.top:1888/video</a><span>React+next+mongodb</span></div></li>
       </ul>
 
