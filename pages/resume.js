@@ -6,18 +6,28 @@ const Resume = props => {
   return (
     <>
     <NextSeo
-      title="尹士勇简历" 
+      title="尹士勇-前端工程师-简历" 
     />
     <div className="wrap">
-      <h1 >尹士勇(男)</h1>
+      <h1 className="name">尹士勇<span className="sex">(男)</span></h1>
       <h1>求职意向：前端工程师</h1>
-      <div className="info ml5">
+      {/* <div className="info ml5">
         <div>手机：18810961061</div>
         <div>邮箱：braveyin168@outlook.com</div>
       </div>
       <div className="info ml5">
         <div>年龄：31</div>
         <div>现居：成都市天府新区</div>
+      </div> */}
+      <div className="flex-between">
+        <div>
+          <div>手机：18810961061</div>
+          <div>年龄：31</div>
+        </div>
+        <div>
+          <div>邮箱：braveyin@126.com</div>
+          <div>现居：成都市天府新区</div>
+        </div>
       </div>
 
       <h1>教育背景</h1>
@@ -32,7 +42,7 @@ const Resume = props => {
       <div className="divider"></div>
       <div className="flex-between ml5">
         <div>
-            <div >2019.02~现在 (&gt;2年)</div>
+            <div >2019.02~现在 (>2年)</div>
             <div >2018.07~2018.11 (4月)</div>
             <div >2014.07~2018.07 (4年)</div>
         </div>
@@ -70,10 +80,10 @@ const Resume = props => {
         <li>设计并搭建路由系统，通过数组配置自动处理页面URL、左侧导航、右侧页面、权限控制和面包屑等</li>
         <li>设计并搭建node服务器，通过转发解决跨域问题，一键对接多个后端服务；通过代理解决外网穿透问题</li>
       </ul>
-      <div className="item-title flex-between"><span>参与包车RN项目的开发</span><span>RN+redux</span><span>APP</span></div>
-      <div className="item-title flex-between"><span>参与包车H5项目的开发</span><span>React+next</span><span>H5</span></div>
-      <div className="item-title flex-between"><span>参与Flash项目的开发</span><span>Vue+nuxt</span><span>H5</span></div>
-      <div className="item-title flex-between"><span>参与打车包车微信和支付宝等小程序的开发</span><span>原生开发</span><span>小程序</span></div>
+      <div className="item-title flex-between"><span>包车RN项目的开发</span><span>RN+redux</span><span>APP</span></div>
+      <div className="item-title flex-between"><span>包车H5项目的开发</span><span>React+next</span><span>H5</span></div>
+      <div className="item-title flex-between"><span>Flash项目的开发</span><span>Vue+nuxt</span><span>H5</span></div>
+      <div className="item-title flex-between"><span>包车微信和支付宝等小程序的开发</span><span>原生开发</span><span>小程序</span></div>
 
       <div className="divider-sub"></div>
 
@@ -87,7 +97,7 @@ const Resume = props => {
       <ul>
         <li>复杂的配载计算逻辑集中在前端(在一个table中涉及到了重量、体积、价格、已配载量、剩余量、添加和删除物品等诸多联动逻辑)</li>
         <li>负责这块的组员在开发的过程中总是出现计算错误的问题，发现其对这里的逻辑没有整理清楚，且写的代码耦合度很高</li>
-        <li>我们一起从头梳理了逻辑后并对代码进行了解耦，这个复杂的联动计算就迎刃而解了</li>
+        <li>帮助其从头梳理了逻辑并对代码进行了解耦，这个复杂的联动计算就迎刃而解了</li>
       </ul>
 
       <div className="divider-sub"></div>
@@ -105,15 +115,15 @@ const Resume = props => {
         <li>设计开发trim.js，将对象中的所有值进行trim，在http发出请求的时候做收口统一处理</li>
         <li>设计开发任务模板系统，提高运营效率100%，省50%成本，获年度优秀项目奖</li>
       </ul>
-      <div className="item-title flex-between"><span>再出发系统主力开发</span><span>avalon+Oniui</span><span>Web</span></div>
+      <div className="item-title flex-between"><span>再出发系统的主力开发</span><span>avalon+Oniui</span><span>Web</span></div>
       <ul>
         <li>设计开发grunt-i19n插件，解放中英繁三种字体配置的重复劳动，提高效率</li>
       </ul>
-      <div className="item-title flex-between"><span>参与酒店移动页面开发</span><span>React</span><span>H5</span></div>
+      <div className="item-title flex-between"><span>酒店移动版的开发</span><span>React</span><span>H5</span></div>
       <ul>
         <li>酒店业务华为对接，协调团结10多个小组近30人，推动项目的发展，按时成功上线</li>
       </ul>
-      <div className="item-title flex-between"><span>参与再出发公众号的开发</span><span>avalon+Oniui</span><span>公众号</span></div>
+      <div className="item-title flex-between"><span>再出发公众号的开发</span><span>avalon+Oniui</span><span>公众号</span></div>
 
       <h1>工作技能</h1>
       <div className="divider"></div>
