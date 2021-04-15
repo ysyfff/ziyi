@@ -32,14 +32,14 @@ const Resume = props => {
       <div className="divider"></div>
       <div className="flex-between ml5">
         <div>
-          <div >2019.02~至今</div>
-          <div >2018.07~2018.11</div>
-          <div >2014.07~2018.07</div>
+            <div >2019.02~现在 (&gt;2年)</div>
+            <div >2018.07~2018.11 (4月)</div>
+            <div >2014.07~2018.07 (4年)</div>
         </div>
         <div>
-          <div>携程(&gt;2年)</div>
-          <div>货车帮(4月)</div>
-          <div>去哪儿(4年)</div>
+          <div>携程</div>
+          <div>货车帮</div>
+          <div>去哪儿</div>
         </div>
         <div>
           <div>前端工程师</div>
