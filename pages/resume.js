@@ -80,20 +80,20 @@ const Resume = props => {
         <li>设计并搭建路由系统，通过数组配置自动处理页面URL、左侧导航、右侧页面、权限控制和面包屑等</li>
         <li>设计并搭建node服务器，通过转发解决跨域问题，一键对接多个后端服务；通过代理解决外网穿透问题</li>
       </ul>
-      <div className="item-title flex-between"><span>包车RN项目的开发</span><span>RN+redux</span><span>APP</span></div>
-      <div className="item-title flex-between"><span>包车H5项目的开发</span><span>React+next</span><span>H5</span></div>
-      <div className="item-title flex-between"><span>Flash项目的开发</span><span>Vue+nuxt</span><span>H5</span></div>
       <div className="item-title flex-between"><span>包车微信和支付宝等小程序的开发</span><span>原生开发</span><span>小程序</span></div>
+      <div className="item-title flex-between fwnormal"><span>包车RN项目的开发</span><span>RN+redux</span><span>APP</span></div>
+      <div className="item-title flex-between fwnormal"><span>包车H5项目的开发</span><span>React+next</span><span>H5</span></div>
+      <div className="item-title flex-between fwnormal"><span>Flash项目的开发</span><span>Vue+nuxt</span><span>H5</span></div>
 
       <div className="divider-sub"></div>
 
       <div className="title">货车帮</div>
-      <div className="item-title flex-between"><span>公铁项目救急</span><span>React+dva</span><span>Web</span></div>
+      <div className="item-title flex-between fwnormal"><span>公铁项目救急</span><span>React+dva</span><span>Web</span></div>
       <ul>
         <li>入职后发现此项目工作量大且时间紧，当即向产品经理和项目经理风险报告</li>
         <li>在争取一定时间后，大家齐心协力做此项目，最终按照新的时间点成功上线</li>
       </ul>
-      <div className="item-title flex-between"><span>甩挂项目攻坚</span><span>React+dva</span><span>Web</span></div>
+      <div className="item-title flex-between fwnormal"><span>甩挂项目攻坚</span><span>React+dva</span><span>Web</span></div>
       <ul>
         <li>复杂的配载计算逻辑集中在前端(在一个table中涉及到了重量、体积、价格、已配载量、剩余量、添加和删除物品等诸多联动逻辑)</li>
         <li>负责这块的组员在开发的过程中总是出现计算错误的问题，发现其对这里的逻辑没有整理清楚，且写的代码耦合度很高</li>
@@ -123,7 +123,7 @@ const Resume = props => {
       <ul>
         <li>酒店业务华为对接，协调团结10多个小组近30人，推动项目的发展，按时成功上线</li>
       </ul>
-      <div className="item-title flex-between"><span>再出发公众号的开发</span><span>avalon+Oniui</span><span>公众号</span></div>
+      <div className="item-title flex-between fwnormal"><span>再出发公众号的开发</span><span>avalon+Oniui</span><span>公众号</span></div>
 
       <h1>工作技能</h1>
       <div className="divider"></div>
