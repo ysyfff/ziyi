@@ -5,7 +5,7 @@ Service Worker是一个标准的 web worker，浏览器用一个单独的线程�
 */
 // configuration
 const
-  version = '1618586125129',
+  version = '1618586550216',
   CACHE = version + '::ZiyiMember',
   installFilesEssential = [
     '/',

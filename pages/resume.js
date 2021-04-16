@@ -159,7 +159,7 @@ const Resume = props => {
         <div className="divider"></div>
         {/* <div>7年资深前端开发，具备<span style={{ fontWeight: 'bold' }}>全栈开发</span>的能力，具有Web端和移动端开发的雄厚实力，热爱折腾与学习</div> */}
         <ul>
-          <li>全栈工程师，7年资深前端开发，具有4年Web开发和3年移动开发经验，并具备<span style={{fontWeight: 'bold'}}>后端开发</span>的能力</li>
+          <li><span style={{fontWeight: 'bold'}}>全栈工程师</span>，7年资深前端开发，具有4年Web和3年移动开发经验，具备后端开发能力</li>
           <li>能独当一面，曾3次主导中型项目的设计与开发</li>
           <li>希望通过本人丰富的经验和优秀的代码为公司提供高质量的产品</li>
         </ul>
