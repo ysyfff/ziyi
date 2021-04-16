@@ -9,7 +9,7 @@ const Resume = props => {
         title="吴利宏简历"
       />
       <div className="wrap wife">
-        <h1 >吴利宏(女)</h1>
+        <h1 className="name">吴利宏<span className="sex">(女)</span></h1>
         <h1>求职意向：护士</h1>
         <div className="info ml5">
           <div>手机：13880538313</div>
