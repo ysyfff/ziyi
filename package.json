@@ -24,6 +24,7 @@
     "next-offline": "^5.0.2",
     "next-seo": "^4.23.0",
     "node-sass": "^5.0.0",
+    "qrcode": "^1.4.4",
     "react": "16.13.1",
     "react-awesome-slider": "^4.1.0",
     "react-dom": "16.13.1",
