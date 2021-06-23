@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { Row, Col, Radio, Input, Button, Modal, message, Table } from 'antd';
+import { Row, Col, Radio, Input, Button, Modal, message, Table, Popconfirm } from 'antd';
 import QR from 'qrcode'
 
 const storageKey = 'tsnow.records'
@@ -238,7 +238,17 @@ const Qrcode = props => {
                                         return (
                                             <>
                                                 <a type="link" onClick={() => fillData(row)}>使用</a>
-                                                <div style={{display: 'inline-block', marginLeft: 10}}><a type="link" onClick={() => delRecord(row)}>删除</a></div>
+                                                <div style={{ display: 'inline-block', marginLeft: 10 }}>
+                                                    <Popconfirm
+                                                        title="确定删除吗?"
+                                                        onConfirm={() => delRecord(row)}
+                                                        okText="Yes"
+                                                        cancelText="No"
+
+                                                    >
+                                                        <a type="link" style={{color: '#aaa'}} >删除</a>
+                                                    </Popconfirm>
+                                                </div>
                                             </>
                                         )
                                     }
