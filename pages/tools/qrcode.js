@@ -53,7 +53,7 @@ const del = (v) => {
 }
 
 const Qrcode = props => {
-    const v = (get() || []).find(item=>item.moduleName === localStorage.getItem('tsnow.currentModuleName')) || {};
+    const v = (get() || []).find(item => item.moduleName === localStorage.getItem('tsnow.currentModuleName')) || {};
     console.log(v.port, 'ggg')
 
     const [channel, setChannel] = useState(v.channel || 'crn');
@@ -69,7 +69,7 @@ const Qrcode = props => {
     const [name, setName] = useState('');
     const [visible, setVisible] = useState(false);
 
-    
+
 
     const [url, setUrl] = useState('http://172.19.106.8:5389/index.android.bundle?CRNModuleName=rn_chartered&CRNType=1&initialPage=Test')
 
@@ -78,7 +78,7 @@ const Qrcode = props => {
             `http://${ip}:${port}/index.${platform}.bundle?${config[channel].moduleName}=${moduleName}&${config[channel].type}=1&${config[channel].initialPage}=${initialPage}`
             :
             `/${moduleName}/${cfg}?${config[channel].moduleName}=${moduleName}&${config[channel].type}=1&${config[channel].initialPage}=${initialPage}`;
-            console.log(v.port, '888')
+        console.log(v.port, '888')
         setUrl(text)
     }, [channel, locate, platform, ip, port, moduleName, initialPage])
 
@@ -87,7 +87,7 @@ const Qrcode = props => {
         update({ channel, locate, platform, ip, port, moduleName, initialPage, pindao, cfg })
     }, [url])
 
-    useEffect(()=>{
+    useEffect(() => {
         localStorage.setItem('tsnow.currentModuleName', moduleName)
     }, [moduleName])
 
@@ -125,6 +125,11 @@ const Qrcode = props => {
         setInitialPage(initialPage)
         setPindao(pindao)
         setCfg(cfg)
+    }
+
+    const delRecord = (data) => {
+        saveArr(get().filter(item => item.name !== data.name))
+        updateList()
     }
 
 
@@ -231,7 +236,10 @@ const Qrcode = props => {
                                 {
                                     title: '操作', key: 'oper', render: (oper, row) => {
                                         return (
-                                            <Button type="primary" onClick={() => fillData(row)}>使用</Button>
+                                            <>
+                                                <a type="link" onClick={() => fillData(row)}>使用</a>
+                                                <div style={{display: 'inline-block', marginLeft: 10}}><a type="link" onClick={() => delRecord(row)}>删除</a></div>
+                                            </>
                                         )
                                     }
                                 }
