@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { Row, Col, Radio, Input, Button, Modal, message, Table, Popconfirm } from 'antd';
 import QR from 'qrcode'
+import { NextSeo } from 'next-seo';
 
 const storageKey = 'tsnow.records'
 var config = {
@@ -136,6 +137,9 @@ const Qrcode = props => {
     return (
 
         <div style={{ padding: 20, }}>
+            <NextSeo
+                title="二维码QRCode"
+            />
             <Row>
                 <Col span={14}>
                     <div style={{ minHeight: 280 }}>
@@ -246,7 +250,7 @@ const Qrcode = props => {
                                                         cancelText="No"
 
                                                     >
-                                                        <a type="link" style={{color: '#aaa'}} >删除</a>
+                                                        <a type="link" style={{ color: '#aaa' }} >删除</a>
                                                     </Popconfirm>
                                                 </div>
                                             </>
