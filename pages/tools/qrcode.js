@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { Row, Col, Radio, Input, Button, Modal, message, Table, Popconfirm } from 'antd';
 import QR from 'qrcode'
+import qs from 'qs';
 import { NextSeo } from 'next-seo';
 
 const storageKey = 'tsnow.records'
@@ -70,7 +71,11 @@ const Qrcode = props => {
     const [name, setName] = useState('');
     const [visible, setVisible] = useState(false);
 
-
+    useEffect(()=>{
+        const params = qs.parse(window.location.search.split('?')[1]);
+        setIp(params.ip);
+        setModuleName(params.moduleName);
+    }, [])
 
     const [url, setUrl] = useState('http://172.19.106.8:5389/index.android.bundle?CRNModuleName=rn_chartered&CRNType=1&initialPage=Test')
 
