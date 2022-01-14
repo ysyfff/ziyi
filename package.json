@@ -31,6 +31,7 @@
     "react-dom": "16.13.1",
     "react-file-download": "^0.3.5",
     "react-file-reader": "^1.1.4",
-    "sass": "^1.30.0"
+    "sass": "^1.30.0",
+    "tsnow.npm": "^1.1.5"
   }
 }
