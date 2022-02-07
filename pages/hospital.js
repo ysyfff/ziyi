@@ -32,11 +32,11 @@ export const Header = () => {
 }
 
 const Hospital = props => {
-  const a = 1;
+  const a = 2;
   return (
     <div>
       {a == 1 && <div style={{ width: '170mm', height: '297mm',  margin: '0 auto', fontWeight: 500, fontSize: 13 }}>
-        <div style={{ height: '' }}>
+        <div style={{ height: '250mm' }}>
           <Header />
           <div style={{ display: 'flex' }}>
             <div style={{ width: '40%' }}>姓名:吴志明</div>
@@ -85,7 +85,7 @@ const Hospital = props => {
       </div>}
 
       {a!=1 && <div style={{ width: '170mm', height: '297mm',  margin: '0 auto', fontWeight: 500, fontSize: 13 }}>
-        <div style={{ height: '278mm' }}>
+        <div style={{ height: '250mm' }}>
           <Header />
           <div>
             及“胃周脂肪内淋巴结”1枚，早反应性增生。2、&lt;大网膜&gt;未见确切癌累及。3、&lt;肝总A旁淋巴结&gt;4枚，早反应性增生。4、&lt;胰腺上缘组织&gt;送检为7枚淋巴结，呈反应性增生。5、&lt;下腔V旁淋巴结&gt;1枚。早反应性增生。向患者及家属交代病情，今日要求出院。
