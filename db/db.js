@@ -1,5 +1,5 @@
 import { openDB } from 'idb';
-
+const DB_VERSION = 28
 export default class IDB {
   constructor({ name, version } = {}) {
     this.db = null;
@@ -45,20 +45,24 @@ export default class IDB {
           const { storeName, keepData, updated, createStore } = obj;
 
           if (this.existStore({ db, storeName })) {
+            console.log('存在', storeName)
             // 如果更新版本需要updated，则更新之，否则do nothing
             if (updated) {
               if (keepData) { // 如果保留数据，转移数据，创建store，回复数据
                 // 这里一定要用oldVersion打开oldDB，来读取之前的数据
                 const oldDb = await openDB(this.name, oldVersion)
                 await this.transfer({ db: oldDb, storeName });
+                console.log('执行1', storeName)
                 createStore({ db });
                 await this.recovery({ db, storeName });
               } else { // 如果不保存数据，直接删除
                 db.deleteObjectStore(storeName);
+                console.log('执行2', storeName)
                 createStore({ db });
               }
             }
           } else {
+            console.log('执行3', storeName)
             createStore({ db })
           }
         }));
@@ -191,7 +195,7 @@ export default class IDB {
   }
 }
 
-const idb = new IDB({ version: 24, name: 'ziyi' })
+const idb = new IDB({ version: DB_VERSION, name: 'ziyi' })
 
 idb.addStore({
   storeName: 'member',
@@ -238,12 +242,27 @@ idb.addStore({
   }
 });
 
+idb.addStore({
+  storeName: 'stock',
+  updated: false,
+  createStore: (({db})=>{
+    const store = db.createObjectStore('stock', {
+      keyPath: 'id',
+      autoIncrement: true
+    })
+
+    store.createIndex('name', 'name')
+    store.createIndex('avgPrice', 'avgPrice')
+    store.createIndex('number', 'number')
+  })
+})
 
 
 const member = idb.getStoreInstance({ storeName: 'member' })
 const spend = idb.getStoreInstance({ storeName: 'spend' })
 const score = idb.getStoreInstance({ storeName: 'score' })
+const stock = idb.getStoreInstance({storeName: 'stock'})
 
 export {
-  member, spend, idb, score
+  member, spend, idb, score, stock
 }
