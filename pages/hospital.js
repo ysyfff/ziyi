@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../styles/hospital.less'
 
 const Three = () => {
@@ -10,8 +10,8 @@ export const Header = () => {
   return (
     <div >
       <div style={{ height: '15mm', overflow: 'hidden', marginBottom: '3mm', display: 'flex' }}>
-        <div style={{ marginTop: 12, marginLeft: -9 }}>
-          <img src='http://pic.pc6.com/up/2015-9/2015922163050.png' style={{ width: '15mm', height: '15mm' }} />
+        <div style={{ marginTop: 14, marginLeft: -9 }}>
+          <img src='https://i02piccdn.sogoucdn.com/31ab7ddcc1665ec2' style={{ width: '15mm', height: '15mm' }} />
         </div>
         <div style={{ marginTop: 25, lineHeight: 1.1, marginLeft: -5 }}>
           <div style={{ fontSize: 8, letterSpacing: '-0.5px' }}>SICHUAN CANCER HOSPITAL</div>
@@ -31,12 +31,21 @@ export const Header = () => {
   )
 }
 
+const getSearch = ()=>{
+  return location.search.substring(1).split('&').reduce((acc, cur)=>{let [l, v] = cur.split('='); acc[l]=v;return acc}, {})
+}
 const Hospital = props => {
-  const a = 2;
+
+  const [a, setA ] = useState(1)
+  
+  useEffect(()=>{
+    setA(getSearch()['page'])
+  }, [])
+
   return (
     <div>
       {a == 1 && <div style={{ width: '170mm', height: '297mm',  margin: '0 auto', fontWeight: 500, fontSize: 13 }}>
-        <div style={{ height: '250mm' }}>
+        <div style={{ height: '258mm' }}>
           <Header />
           <div style={{ display: 'flex' }}>
             <div style={{ width: '40%' }}>姓名:吴志明</div>
@@ -85,7 +94,7 @@ const Hospital = props => {
       </div>}
 
       {a!=1 && <div style={{ width: '170mm', height: '297mm',  margin: '0 auto', fontWeight: 500, fontSize: 13 }}>
-        <div style={{ height: '250mm' }}>
+        <div style={{ height: '258mm' }}>
           <Header />
           <div>
             及“胃周脂肪内淋巴结”1枚，早反应性增生。2、&lt;大网膜&gt;未见确切癌累及。3、&lt;肝总A旁淋巴结&gt;4枚，早反应性增生。4、&lt;胰腺上缘组织&gt;送检为7枚淋巴结，呈反应性增生。5、&lt;下腔V旁淋巴结&gt;1枚。早反应性增生。向患者及家属交代病情，今日要求出院。

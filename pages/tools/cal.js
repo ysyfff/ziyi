@@ -98,7 +98,7 @@ const Cal = props => {
                     <Col><Input value={money} onChange={e => moneySet(e.target.value)} placeholder="购买金额"/></Col>
                 </Row>
                 <div style={{ height: 20 }} />
-                <Table pagination={false} dataSource={buyCalResult} columns={columnsBuyCal} bordered={true} size="small" />
+                <Table  dataSource={buyCalResult} columns={columnsBuyCal} bordered={true} size="small" pagination={false} />
                 {/* <div>{buyCalResult.map((item, i)=>{
                     return (<div key={i.toString()}>{item}</div>)
                 })}</div> */}
