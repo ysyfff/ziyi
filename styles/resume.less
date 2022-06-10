@@ -16,6 +16,7 @@ body {
   margin-left: 0px;
 }
 
+
 .wrap h1,
 .wrap span,
 .wrap ul,
@@ -85,6 +86,7 @@ ul {
   max-width: 860px;
   min-width: 375px;
   padding-left: 50px;
+  position: relative;
   padding-right: 50px;
 }
 
@@ -122,7 +124,7 @@ h1 {
 
 .divider {
   width: 100%;
-  border-bottom: 1px solid rgb(204, 204, 204);
+  border-bottom: 1px solid #eee;
   margin-bottom: 10px;
 }
 
@@ -183,4 +185,53 @@ h1 {
 }
 .wrap .fwnormal{
   font-weight: normal;
+}
+
+.qr-code{
+  display: flex;
+  position: absolute;
+  right: 40px;
+  top: -15px;
+}
+
+
+.qr-blog, .qr-resume{
+  width: 6rem;
+  height: 6rem;
+  position: relative;
+}
+.qr-blog img, .qr-resume img{
+  width: 100%;
+  height: 100%;
+}
+
+.qr-blog{
+  margin-left: 20px;
+}
+
+.qr-blog::before, .qr-resume::before{
+  content: '博客';
+  width: 30px;
+  height: 30px;
+  line-height: 26px;
+  color: white;
+  border-radius: 100%;
+  font-size: 0.6rem;
+  text-align: center;
+  border: 2px solid white;
+  background-color: #333;
+  position: absolute;
+  top: calc(50% - 15px);
+  left: calc(50% - 15px);
+}
+
+.qr-resume::before{
+  content: '简历';
+  background-color: #333;
+}
+
+@media only screen and (max-width: 600px) {
+  .qr-code {
+    right: 0;
+  }
 }
