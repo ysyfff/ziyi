@@ -1,5 +1,5 @@
-import { openDB } from 'idb';
-const DB_VERSION = 28
+import { openDB } from "idb";
+const DB_VERSION = 28;
 export default class IDB {
   constructor({ name, version } = {}) {
     this.db = null;
@@ -15,97 +15,102 @@ export default class IDB {
 
     this.cacheData = await this.getItems({ storeName, db });
     db.deleteObjectStore(storeName);
-  }
+  };
 
   // 从transfer中恢复数据
   recovery = async ({ db, storeName } = {}) => {
-
     await this.setItems({ storeName, values: this.cacheData, db });
-  }
-
+  };
 
   addStore = ({ storeName, keepData, updated, createStore } = {}) => {
     this.stores.push({ storeName, keepData, updated, createStore });
-  }
+  };
 
   // 判断store是否存在
   existStore = ({ db, storeName } = {}) => {
-    db = db || this.db
+    db = db || this.db;
     if (db) {
-      return db.objectStoreNames.contains(storeName)
+      return db.objectStoreNames.contains(storeName);
     }
     return false;
-  }
+  };
 
   // 创建表格
   createDatabase = async () => {
     this.db = await openDB(this.name, this.version, {
       upgrade: async (db, oldVersion, newVersion, transaction) => {
-        await Promise.all(this.stores.map(async obj => {
-          const { storeName, keepData, updated, createStore } = obj;
+        await Promise.all(
+          this.stores.map(async (obj) => {
+            const { storeName, keepData, updated, createStore } = obj;
 
-          if (this.existStore({ db, storeName })) {
-            console.log('存在', storeName)
-            // 如果更新版本需要updated，则更新之，否则do nothing
-            if (updated) {
-              if (keepData) { // 如果保留数据，转移数据，创建store，回复数据
-                // 这里一定要用oldVersion打开oldDB，来读取之前的数据
-                const oldDb = await openDB(this.name, oldVersion)
-                await this.transfer({ db: oldDb, storeName });
-                console.log('执行1', storeName)
-                createStore({ db });
-                await this.recovery({ db, storeName });
-              } else { // 如果不保存数据，直接删除
-                db.deleteObjectStore(storeName);
-                console.log('执行2', storeName)
-                createStore({ db });
+            if (this.existStore({ db, storeName })) {
+              console.log("存在", storeName);
+              // 如果更新版本需要updated，则更新之，否则do nothing
+              if (updated) {
+                if (keepData) {
+                  // 如果保留数据，转移数据，创建store，回复数据
+                  // 这里一定要用oldVersion打开oldDB，来读取之前的数据
+                  const oldDb = await openDB(this.name, oldVersion);
+                  await this.transfer({ db: oldDb, storeName });
+                  console.log("执行1", storeName);
+                  createStore({ db });
+                  await this.recovery({ db, storeName });
+                } else {
+                  // 如果不保存数据，直接删除
+                  db.deleteObjectStore(storeName);
+                  console.log("执行2", storeName);
+                  createStore({ db });
+                }
               }
+            } else {
+              console.log("执行3", storeName);
+              createStore({ db });
             }
-          } else {
-            console.log('执行3', storeName)
-            createStore({ db })
-          }
-        }));
-      }
-    })
-  }
+          })
+        );
+      },
+    });
+  };
 
   setItems = async ({ storeName, values, db } = {}) => {
     db = db || this.db;
 
     if (db && this.existStore({ db, storeName })) {
-        if (Object.prototype.toString.call(values) === '[object Object]') {
-          // 单个增加
-          db.add(storeName, values)
-        } else {
-          // 多个增加
-          const tx = db.transaction(storeName, 'readwrite');
-          const arr = values.map(item => {
-            return tx.store.add(item);
-          })
-          arr.push(tx.done)
-          await Promise.all(arr)
-        }
+      if (Object.prototype.toString.call(values) === "[object Object]") {
+        // 单个增加
+        db.add(storeName, values);
+      } else {
+        // 多个增加
+        const tx = db.transaction(storeName, "readwrite");
+        const arr = values.map((item) => {
+          return tx.store.add(item);
+        });
+        arr.push(tx.done);
+        await Promise.all(arr);
+      }
     }
-  }
+  };
 
   editItems = async ({ key, values, db, storeName } = {}) => {
     db = db || this.db;
 
-    if (db && this.existStore({ db, storeName })) {//判断是否存在store
-      const store = db.transaction(storeName, 'readwrite').objectStore(storeName);
-      const _data = await store.get(key)
-      Object.keys(values).map(k => {
+    if (db && this.existStore({ db, storeName })) {
+      //判断是否存在store
+      const store = db
+        .transaction(storeName, "readwrite")
+        .objectStore(storeName);
+      const _data = await store.get(key);
+      Object.keys(values).map((k) => {
         if (_data[k] !== values[k]) {
-          _data[k] = values[k]
+          _data[k] = values[k];
         }
-      })
-      store.put(_data)
+      });
+      store.put(_data);
     }
-  }
+  };
 
   /**
-   * 
+   *
    * @param {index} 注意index不能是kepPath的值，否则会抛错
    */
   getFromIndex = async ({ store, key, index, fuzzy } = {}) => {
@@ -129,140 +134,146 @@ export default class IDB {
           }
         }
       } else {
-        _values.push(cursor.value)
+        _values.push(cursor.value);
       }
 
-      cursor = await cursor.continue()
+      cursor = await cursor.continue();
     }
-    return _values
-  }
+    return _values;
+  };
   // 返回数组的结构
   getItems = async ({ storeName, key, db, index, fuzzy, sorted } = {}) => {
     db = db || this.db;
 
-    if (db && this.existStore({ db, storeName })) {//判断是否存在store
+    if (db && this.existStore({ db, storeName })) {
+      //判断是否存在store
       const store = db.transaction(storeName).objectStore(storeName);
       let rst;
       if (key) {
         if (index) {
-          let _values = []
-          if (Object.prototype.toString.call(index) === '[object Array]') {
-            const __values = await Promise.all(index.map(async item => {
-              return await this.getFromIndex({ store, key, index: item, fuzzy })
-            }))
-            _values = __values.flat()
+          let _values = [];
+          if (Object.prototype.toString.call(index) === "[object Array]") {
+            const __values = await Promise.all(
+              index.map(async (item) => {
+                return await this.getFromIndex({
+                  store,
+                  key,
+                  index: item,
+                  fuzzy,
+                });
+              })
+            );
+            _values = __values.flat();
           } else {
-            _values = await this.getFromIndex({ store, key, index, fuzzy })
+            _values = await this.getFromIndex({ store, key, index, fuzzy });
           }
           rst = _values;
         } else {
-          rst = [await store.get(key)]
+          rst = [await store.get(key)];
         }
       } else {
-        rst = await db.getAll(storeName)
+        rst = await db.getAll(storeName);
       }
-      if(sorted && typeof sorted === 'function'){
-        rst.sort(sorted)
+      if (sorted && typeof sorted === "function") {
+        rst.sort(sorted);
       }
       return rst;
     }
-  }
+  };
 
   delItems = async ({ storeName, key, db } = {}) => {
     db = db || this.db;
 
-    if (db && this.existStore({ db, storeName })) {//判断是否存在store
-      const store = db.transaction(storeName, 'readwrite').objectStore(storeName);
+    if (db && this.existStore({ db, storeName })) {
+      //判断是否存在store
+      const store = db
+        .transaction(storeName, "readwrite")
+        .objectStore(storeName);
       await store.delete(key);
     }
-  }
+  };
 
   getStoreInstance = ({ storeName } = {}) => {
     return {
       setItems: async (values) => {
-        return await this.setItems({ storeName, values })
+        return await this.setItems({ storeName, values });
       },
       getItems: async (key, { index, fuzzy = false, sorted } = {}) => {
-        return await this.getItems({ storeName, key, index, fuzzy, sorted })
+        return await this.getItems({ storeName, key, index, fuzzy, sorted });
       },
       editItems: async (key, values) => {
-        return await this.editItems({ key, storeName, values })
+        return await this.editItems({ key, storeName, values });
       },
       delItems: async (key) => {
-        return await this.delItems({ key, storeName })
-      }
-    }
-  }
+        return await this.delItems({ key, storeName });
+      },
+    };
+  };
 }
 
-const idb = new IDB({ version: DB_VERSION, name: 'ziyi' })
+const idb = new IDB({ version: DB_VERSION, name: "ziyi" });
 
 idb.addStore({
-  storeName: 'member',
+  storeName: "member",
   keepData: true,
   updated: false,
   createStore: ({ db }) => {
-
-    const store = db.createObjectStore('member', {
-      keyPath: 'id',
-      autoIncrement: true
+    const store = db.createObjectStore("member", {
+      keyPath: "id",
+      autoIncrement: true,
     });
-    store.createIndex('phone', 'phone', { unique: true });
-    store.createIndex('name', 'name');
-    store.createIndex('score', 'score');
-    store.createIndex('hisotry', 'history');
-  }
+    store.createIndex("phone", "phone", { unique: true });
+    store.createIndex("name", "name");
+    store.createIndex("score", "score");
+  },
 });
 
 idb.addStore({
-  storeName: 'spend',
+  storeName: "spend",
   updated: false,
   createStore: ({ db }) => {
-    const store = db.createObjectStore('spend', {
-      keyPath: 'id',
-      autoIncrement: true
-    })
+    const store = db.createObjectStore("spend", {
+      keyPath: "id",
+      autoIncrement: true,
+    });
 
-    store.createIndex('phone', 'phone');
-    store.createIndex('desc', 'desc');
-  }
+    store.createIndex("phone", "phone");
+    store.createIndex("desc", "desc");
+  },
 });
 
 idb.addStore({
-  storeName: 'score',
+  storeName: "score",
   updated: false,
   createStore: ({ db }) => {
-    const store = db.createObjectStore('score', {
-      keyPath: 'id',
-      autoIncrement: true
-    })
+    const store = db.createObjectStore("score", {
+      keyPath: "id",
+      autoIncrement: true,
+    });
 
-    store.createIndex('phone', 'phone');
-    store.createIndex('desc', 'desc');
-  }
+    store.createIndex("phone", "phone");
+    store.createIndex("desc", "desc");
+  },
 });
 
 idb.addStore({
-  storeName: 'stock',
+  storeName: "stock",
   updated: false,
-  createStore: (({db})=>{
-    const store = db.createObjectStore('stock', {
-      keyPath: 'id',
-      autoIncrement: true
-    })
+  createStore: ({ db }) => {
+    const store = db.createObjectStore("stock", {
+      keyPath: "id",
+      autoIncrement: true,
+    });
 
-    store.createIndex('name', 'name')
-    store.createIndex('avgPrice', 'avgPrice')
-    store.createIndex('number', 'number')
-  })
-})
+    store.createIndex("name", "name");
+    store.createIndex("avgPrice", "avgPrice");
+    store.createIndex("number", "number");
+  },
+});
 
+const member = idb.getStoreInstance({ storeName: "member" });
+const spend = idb.getStoreInstance({ storeName: "spend" });
+const score = idb.getStoreInstance({ storeName: "score" });
+const stock = idb.getStoreInstance({ storeName: "stock" });
 
-const member = idb.getStoreInstance({ storeName: 'member' })
-const spend = idb.getStoreInstance({ storeName: 'spend' })
-const score = idb.getStoreInstance({ storeName: 'score' })
-const stock = idb.getStoreInstance({storeName: 'stock'})
-
-export {
-  member, spend, idb, score, stock
-}
+export { member, spend, idb, score, stock };
