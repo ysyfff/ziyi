@@ -13,6 +13,7 @@ const ScoreList = (props) => {
     setScoreListVisible(false)
   };
 
+  console.log(scoreListData, '9999')
   const editScore = ({ row } = {}) => {
     scoreRef.current.editScore({ row })
   };

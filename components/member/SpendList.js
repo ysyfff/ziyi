@@ -1,20 +1,31 @@
 import React, { useState, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { Button, Input, Modal, Table, Form } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { member } from '../../db/db'
+import { member, spend } from '../../db/db'
 import dayjs from 'dayjs'
 
 
 const SpendList = (props) => {
   const { spendListVisible, setSpendListVisible, spendRef, spendListData, setSpendListData } = props;
 
+  const [totalMount, setTotalMount] = useState(0)
+
+  useEffect(() => {
+    const v = spendListData?.reduce((acc, cur) => {
+      acc = +acc + +cur.money
+      return acc
+    }, 0)
+    // alert(v)
+    setTotalMount(v)
+  }, [JSON.stringify(spendListData)])
+
   const closeSpendList = () => {
     setSpendListData([]);
     setSpendListVisible(false)
   };
 
-  const editSpend = ({row}={}) => {
-    spendRef.current.editSpend({row})
+  const editSpend = ({ row } = {}) => {
+    spendRef.current.editSpend({ row })
   };
 
   const columns = [
@@ -31,7 +42,7 @@ const SpendList = (props) => {
       key: 'addDate',
       dataIndex: 'addDate',
       title: '添加日期',
-      render: (v)=>dayjs(v).format('YYYY-MM-DD HH:mm')
+      render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm')
     }, {
       key: 'editDate',
       dataIndex: 'editDate',
@@ -43,7 +54,7 @@ const SpendList = (props) => {
       render: (v, row) => {
         return (
           <>
-            <a onClick={() => editSpend({row})}>修改</a>
+            <a onClick={() => editSpend({ row })}>修改</a>
           </>
         )
       }
@@ -61,6 +72,7 @@ const SpendList = (props) => {
         onOk={closeSpendList}
         onCancel={closeSpendList}
       >
+        共消费：{totalMount}元
         <Table
           rowKey="id"
           dataSource={spendListData}
@@ -70,7 +82,7 @@ const SpendList = (props) => {
           }}
         ></Table>
       </Modal>
-      
+
     </>
   )
 }

@@ -14,14 +14,12 @@ import downloadFile from "react-file-download";
 import axios from "axios";
 const { Search } = Input;
 
-const spendListObject = {};
-const scoreListObject = {};
 
 const sortedById = (a, b) => {
   return b.id - a.id;
 };
 
-const Member = memo((props) => {
+const Member = (props) => {
   // const [db, setDb] = useState(null);
   const [list, setList] = useState([]);
   const [memberVisible, setMemberVisible] = useState(false);
@@ -47,11 +45,19 @@ const Member = memo((props) => {
   const [total, setTotal] = useState(0);
   const [searchValue, setSearchValue] = useState("");
 
+
   // 查询所有消费记录加起来
   const getSpendRecord = async (phone) => {
-    const v = await spend.getItems(phone ?? null, { index: 'phone' })
+    const v = await spend.getItems(phone ?? null, { index: 'phone', sorted: sortedById })
     return v;
   }
+
+  // 查询所有使用积分记录
+  const getScoreRecord = async (phone) => {
+    const v = await score.getItems(phone ?? null, { index: 'phone', sorted: sortedById })
+    return v;
+  }
+
   // 总收入
   const [totalMountLoading, setTotalMountLoading] = useState(false)
   const getTotalMount = async () => {
@@ -69,6 +75,7 @@ const Member = memo((props) => {
     getTotalMount()
   }
 
+  // 处理搜索
   const handleSearch = async (value) => {
     setLoading(true);
     if (value === undefined) {
@@ -91,7 +98,11 @@ const Member = memo((props) => {
     }
     console.log(list, 'ggg2')
 
-    await combineSpendAndScore({ list });
+    // await combineSpendAndScore({ list });
+    setLoading(false);
+    setCurrentPage(1);
+    setTotal(list.length);
+    setList(list);
   };
 
   const combineSpendAndScore = async ({ list } = {}) => {
@@ -103,7 +114,6 @@ const Member = memo((props) => {
           sorted: sortedById,
         });
         // 以phone的维度缓存spendList
-        spendListObject[item.phone] = v;
         return v;
       })
     );
@@ -116,36 +126,15 @@ const Member = memo((props) => {
           sorted: sortedById,
         });
         // 以phone的维度缓存spendList
-        scoreListObject[item.phone] = v;
         return v;
       })
     );
 
-    const tmpList = list.map((item) => {
-      return {
-        ...item,
-        spendTotal: spendListObject[item.phone].length,
-        scoreTotal: scoreListObject[item.phone].length,
-        scoreMoney: scoreListObject[item.phone].reduce((acc, curr) => {
-          acc = +acc + +curr.money;
-          return acc;
-        }, 0),
-        money: spendListObject[item.phone].reduce((acc, curr) => {
-          acc = +acc + +curr.money;
-          return acc;
-        }, 0),
-      };
-    });
 
-    const _totalMount = tmpList.reduce((acc, curr) => {
-      acc = +acc + +curr.money;
-      return acc;
-    }, 0);
-    setTotalMount(_totalMount);
     setLoading(false);
     setCurrentPage(1);
-    setTotal(tmpList.length);
-    setList(tmpList);
+    setTotal(list.length);
+    setList(list);
   };
 
   useEffect(() => {
@@ -159,15 +148,18 @@ const Member = memo((props) => {
     handleSearch();
   }
 
-  const seeHistory = (phone) => {
+  const seeHistory = async (phone) => {
     setPhone(phone);
     setSpendListVisible(true);
-    setSpendListData(spendListObject[phone]);
+    const list = await getSpendRecord(phone)
+    setSpendListData(list);
   };
-  const seeScore = (phone) => {
+  const seeScore = async (phone) => {
     setPhone(phone);
     setScoreListVisible(true);
-    setScoreListData(scoreListObject[phone]);
+    const list = await getScoreRecord(phone)
+    console.log(list, '888888')
+    setScoreListData(list);
   };
 
   const backup = async () => {
@@ -217,18 +209,6 @@ const Member = memo((props) => {
       dataIndex: "phone",
       title: "电话",
     },
-    // {
-    //   key: "money",
-    //   dataIndex: "money",
-    //   title: "购物总金额",
-    //   render: (v) => `${v}元`,
-    // },
-    // {
-    //   key: "spendTotal",
-    //   dataIndex: "spendTotal",
-    //   title: "购物次数",
-    //   render: (v) => `${v}次`,
-    // },
     {
       key: "spending",
       dataIndex: "spending",
@@ -329,9 +309,9 @@ const Member = memo((props) => {
                 <Button onClick={() => backup()}>备份</Button>
               </div>
               <div style={{ marginLeft: 20 }}>
-                <Button onClick={(e) => uploadRef.current.click()}>
+                {/* <Button onClick={(e) => uploadRef.current.click()}>
                   导入数据
-                </Button>
+                </Button> */}
                 <input
                   style={{ visibility: "hidden" }}
                   type="file"
@@ -372,7 +352,7 @@ const Member = memo((props) => {
         setSpendVisible={setSpendVisible}
         handleSearch={async () => {
           await handleSearch();
-          setSpendListData(spendListObject[phone]);
+          setSpendListData(await getSpendRecord(phone));
         }}
       />
       <UpdateScore
@@ -381,7 +361,7 @@ const Member = memo((props) => {
         setScoreVisible={setScoreVisible}
         handleSearch={async () => {
           await handleSearch();
-          setScoreListData(scoreListObject[phone]);
+          setScoreListData(await getScoreRecord(phone));
         }}
       />
       <ScoreList
@@ -416,6 +396,6 @@ const Member = memo((props) => {
       </Block>
     </div>
   );
-});
+};
 
 export default Member;
