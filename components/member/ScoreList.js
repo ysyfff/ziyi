@@ -6,12 +6,22 @@ import dayjs from 'dayjs'
 
 
 const ScoreList = (props) => {
-  const { scoreListVisible, setScoreListVisible, scoreRef, scoreListData, setScoreListData } = props;
+  const { scoreListVisible, setScoreListVisible, scoreRef, scoreListData, setScoreListData, spendListData } = props;
+  const [totalMount, setTotalMount] = useState(0)
 
   const closeScoreList = () => {
     setScoreListData([]);
     setScoreListVisible(false)
   };
+
+  useEffect(() => {
+    const v = spendListData?.reduce((acc, cur) => {
+      acc = +acc + +cur.money
+      return acc
+    }, 0)
+    // alert(v)
+    setTotalMount(v)
+  }, [JSON.stringify(spendListData)])
 
   console.log(scoreListData, '9999')
   const editScore = ({ row } = {}) => {
@@ -62,6 +72,7 @@ const ScoreList = (props) => {
         onOk={closeScoreList}
         onCancel={closeScoreList}
       >
+        共消费：{totalMount}元
         <Table
           rowKey="id"
           dataSource={scoreListData}

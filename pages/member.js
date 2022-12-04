@@ -156,10 +156,11 @@ const Member = (props) => {
   };
   const seeScore = async (phone) => {
     setPhone(phone);
-    setScoreListVisible(true);
+    const sList = await getSpendRecord(phone)
+    setSpendListData(sList);
     const list = await getScoreRecord(phone)
-    console.log(list, '888888')
     setScoreListData(list);
+    setScoreListVisible(true);
   };
 
   const backup = async () => {
@@ -366,6 +367,7 @@ const Member = (props) => {
       />
       <ScoreList
         scoreListData={scoreListData}
+        spendListData={spendListData}
         setScoreListData={setScoreListData}
         scoreListVisible={scoreListVisible}
         setScoreListVisible={setScoreListVisible}
