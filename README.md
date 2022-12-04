@@ -36,6 +36,7 @@
 
 ```js
 yarn ver // 更新service-worker的版本
+yarn build
 vercel
 vercel --prod
 ```
