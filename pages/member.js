@@ -1,5 +1,5 @@
 import React, { useEffect, useState, memo, useCallback, useRef } from "react";
-import { Button, Input, Modal, Table, Form, Row, Col, message } from "antd";
+import { Button, Input, Modal, Table, Form, Row, Col, message, Spin } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Block from "../components/Block";
 import { member, spend, idb, score } from "../db/db";
@@ -47,6 +47,28 @@ const Member = memo((props) => {
   const [total, setTotal] = useState(0);
   const [searchValue, setSearchValue] = useState("");
 
+  // 查询所有消费记录加起来
+  const getSpendRecord = async (phone) => {
+    const v = await spend.getItems(phone ?? null, { index: 'phone' })
+    return v;
+  }
+  // 总收入
+  const [totalMountLoading, setTotalMountLoading] = useState(false)
+  const getTotalMount = async () => {
+    setTotalMountLoading(true)
+    const v = await getSpendRecord()
+    setTotalMountLoading(false)
+    const _totalMount = v.reduce((acc, curr) => {
+      acc = +acc + +curr.money
+      return acc
+    }, 0)
+    setTotalMount(_totalMount)
+  }
+  const handleTotalMount = () => {
+    setTotalMountVisible(!totalMountVisible)
+    getTotalMount()
+  }
+
   const handleSearch = async (value) => {
     setLoading(true);
     if (value === undefined) {
@@ -67,6 +89,7 @@ const Member = memo((props) => {
           sorted: sortedById,
         })) || [];
     }
+    console.log(list, 'ggg2')
 
     await combineSpendAndScore({ list });
   };
@@ -194,18 +217,18 @@ const Member = memo((props) => {
       dataIndex: "phone",
       title: "电话",
     },
-    {
-      key: "money",
-      dataIndex: "money",
-      title: "购物总金额",
-      render: (v) => `${v}元`,
-    },
-    {
-      key: "spendTotal",
-      dataIndex: "spendTotal",
-      title: "购物次数",
-      render: (v) => `${v}次`,
-    },
+    // {
+    //   key: "money",
+    //   dataIndex: "money",
+    //   title: "购物总金额",
+    //   render: (v) => `${v}元`,
+    // },
+    // {
+    //   key: "spendTotal",
+    //   dataIndex: "spendTotal",
+    //   title: "购物次数",
+    //   render: (v) => `${v}次`,
+    // },
     {
       key: "spending",
       dataIndex: "spending",
@@ -323,10 +346,15 @@ const Member = memo((props) => {
           <Col span={6}>
             <div
               style={{ textAlign: "right", fontWeight: "bold" }}
-              onClick={() => setTotalMountVisible(!totalMountVisible)}
+              onClick={handleTotalMount}
             >
               总收入
-              {totalMountVisible && <span>: {totalMount}元</span>}
+              {totalMountVisible ?
+                totalMountLoading ?
+                  <Spin />
+                  :
+                  <span>: {totalMount}元</span>
+                : null}
             </div>
           </Col>
         </Row>
